@@ -59,41 +59,34 @@ mybatis基于注解的入门案例：
 
 ```java
 import com.itheima.domain.User;
-
 import java.util.List;
-
 public interface IUserDao {
     /**
      * 查询所有用户
      * @return
      */
     List<User> findAll();
-
     /**
      * 保存用户信息
      * @param user
      */
     void save(User user);
-
     /**
      * 更新用户信息
      * @param user
      */
     void update(User user);
-
     /**
      * 根据id删除用户
      * @param id
      */
     void delete(Integer id);
-
     /**
      * 通过id查询用户信息
      * @param id
      * @return
      */
     User findById(Integer id);
-
     /**
      * 通过name查询用户
      * @param uasername
@@ -105,8 +98,7 @@ public interface IUserDao {
      * 查询所有用户数量
      * @return
      */
-    int findTotal();
-    
+    int findTotal(); 
      /**
      * 通过queryVo查询用户
      * @param vo  封装后的参数
@@ -262,9 +254,7 @@ import org.junit.Test;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
-
 public class MybatisTest {
-
     private InputStream in = null;
     private SqlSession sql = null;
     private IUserDao dao = null;
@@ -274,7 +264,6 @@ public class MybatisTest {
         sql = new SqlSessionFactoryBuilder().build(in).openSession();
         dao = sql.getMapper(IUserDao.class);
     }
-
     @After
     public void destory() throws Exception{
         sql.commit();
@@ -285,7 +274,6 @@ public class MybatisTest {
             in.close();
         }
     }
-
     @Test//测试查询所有用户信息的方法
     public void testfindAll(){
         List<User> users = dao.findAll();
@@ -299,7 +287,6 @@ public class MybatisTest {
         User user = dao.findById(41);
         System.out.println(user);
     }
-
     @Test//测试通过name查询用户信息的方法
     public void testfindByName(){
         List<User> users = dao.findByName("%王%");
@@ -307,7 +294,6 @@ public class MybatisTest {
             System.out.println(user);
         }
     }
-
      @Test//测试通过queryVo查询用户信息的方法
     public void testfindByVo(){
         QueryVo vo = new QueryVo();
@@ -319,7 +305,7 @@ public class MybatisTest {
             System.out.println(user);
         }
     }
-    
+   
     @Test//测试保存用户信息的方法
     public void testSave(){
         User user = new User();
@@ -331,7 +317,6 @@ public class MybatisTest {
         dao.save(user);
         System.out.println(user);
     }
-
     @Test//测试更新用户信息的方法
     public void testUpdate(){
         User user = new User();
@@ -342,12 +327,10 @@ public class MybatisTest {
         user.setSex("女");
         dao.update(user);
     }
-
     @Test//测试删除用户信息的方法
     public void  testDelete(){
         dao.delete(52);
-    }
-    
+    }   
     @Test//测试用户数量的方法
     public void  testFindTotal(){
         System.out.println(dao.findTotal());
@@ -357,73 +340,22 @@ public class MybatisTest {
 
 ### 11.3.4.附录：
 
-#### 11.3.4.1.实体类User.java
+#### 11.3.4.1.实体类
 
 ```java
 import java.io.Serializable;
 import java.util.Date;
-
 public class User implements Serializable {
     private Integer id;
     private String username;
     private Date birthday;
     private String sex;
     private String address;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", birthday=" + birthday +
-                ", sex=" + sex +
-                ", address='" + address + '\'' +
-                '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
+   //..get()+..set()
 }
 ```
 
-#### 11.3.4.2.数据库conn
+#### 11.3.4.2.数据库
 
 表user
 
@@ -492,25 +424,16 @@ mybatis的主配置文件主要是配置数据库连接及相关环境，还有�
 
 
 
-#### 11.3.4.5.实体类QueryVo 
+#### 11.3.4.5.实体类
 
 ```java
-
 public class QueryVo {
     private User user;
-
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+ //..get()+..set()
 }
 ```
 
-####  11.3.4.6.实现IUserDao
+####  11.3.4.6.实现dao接口
 
 首先去掉QueryVo这个类，然后写个类实现IUserDao,并重写内部方法 。
 
@@ -521,12 +444,9 @@ import com.itheima.dao.IUserDao;
 import com.itheima.domain.User;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-
 import java.util.List;
-
 public class UserDaoImpl implements IUserDao {
     private SqlSession session;
-
     public UserDaoImpl(SqlSession session){
         this.session = session;
     }
@@ -534,29 +454,23 @@ public class UserDaoImpl implements IUserDao {
         List<User> users = session.selectList("com.itheima.dao.IUserDao.findAll");
         return users;
     }
-
     public void save(User user) {
         session.insert("com.itheima.dao.IUserDao.save", user);
     }
-
     public void update(User user) {
         session.update("com.itheima.dao.IUserDao.update", user);
     }
-
     public void delete(Integer id) {
         session.delete("com.itheima.dao.IUserDao.delete", id);
     }
-
     public User findById(Integer id) {
         User user = session.selectOne("com.itheima.dao.IUserDao.findById", id);
         return user;
     }
-
     public List<User> findByName(String username) {
         List<User> users = session.selectList("com.itheima.dao.IUserDao.findByName", username);
         return users;
     }
-
     public int findTotal() {
         Integer count = session.selectOne("com.itheima.dao.IUserDao.findTotal");
         return count;
@@ -570,18 +484,15 @@ public class UserDaoImpl implements IUserDao {
 
 ```java
 public class MybatisTest {
-
     private InputStream in = null;
     private SqlSession sql = null;
     private UserDaoImpl dao = null;
-
     @Before
     public void init() throws Exception{
         in = Resources.getResourceAsStream("sqlMapConfig.xml");
         sql = new SqlSessionFactoryBuilder().build(in).openSession();
         dao = new UserDaoImpl(sql);
     }
-
     @After
     public void destory() throws Exception{
         sql.commit();
@@ -592,7 +503,6 @@ public class MybatisTest {
             in.close();
         }
     }
-
     @Test//测试查询所有用户信息的方法
     public void testFindAll(){
         List<User> users = dao.findAll();
@@ -606,7 +516,6 @@ public class MybatisTest {
         User user = dao.findById(42);
         System.out.println(user);
     }
-
     @Test//测试通过name查询用户信息的方法
     public void testFindByName(){
         List<User> users = dao.findByName("%王%");
@@ -614,7 +523,6 @@ public class MybatisTest {
             System.out.println(user);
         }
     }
-
     @Test//测试保存用户信息的方法
     public void testSave(){
         User user = new User();
@@ -626,7 +534,6 @@ public class MybatisTest {
         dao.save(user);
         System.out.println(user);
     }
-
     @Test//测试更新用户信息的方法
     public void testUpdate(){
         User user = new User();
@@ -637,12 +544,10 @@ public class MybatisTest {
         user.setSex("女");
         dao.update(user);
     }
-
     @Test//测试删除用户信息的方法
     public void  testDelete(){
         dao.delete(53);
     }
-
     @Test//测试用户数量的方法
     public void  testFindTotal(){
         System.out.println(dao.findTotal());
@@ -893,15 +798,25 @@ IUserDao.xml：
 
 4.实现配置：查询用户时可以同时包含用户名下的账户信息，查询账户时可以得到所属用户的信息
 
-1. 用户表：
+#### 11.6.1.1.数据库
 
-   ![1567479105106](E:\typora-document\MyNote\images\1567479105106.png)
+用户表user：
 
-账户表：
+![1567479105106](E:\typora-document\MyNote\images\1567479105106.png)
+
+账户表account：
 
 ![1567479167397](E:\typora-document\MyNote\images\1567479167397.png)
 
-2.用户类：
+账户表外键关系：
+
+![1567578952033](E:\typora-document\MyNote\images\1567578952033.png)
+
+用户表与账户表通过账户表的外键进行关联。
+
+#### 11.6.1.2.实体类
+
+用户类：通过accounts存储与当前用户对象有关联的账户，使用户类与账户类有关联
 
 ```java
 import java.io.Serializable;
@@ -914,21 +829,11 @@ public class User implements Serializable {
     private String sex;
     private String address;
     private List<Account> accounts;
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", birthday=" + birthday +
-                ", sex=" + sex +
-                ", address='" + address + '\'' +
-                '}';
-    }
     //..get()+..set()
-}
+    //toString()-->不包含accounts
 ```
 
-账户类：
+账户类：通过users存储当前账户对象所属的用户，使用户类与账户类有关联
 
 ```java
 import java.io.Serializable;
@@ -937,18 +842,14 @@ public class Account implements Serializable {
     private Integer uid;
     private double money;
     private User user;
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", uid=" + uid +
-                ", money=" + money +
-                '}';
-    }
     //..get()+..set()
+    //toString()-->不包含user
 }
 ```
 
-3.用户配置文件：
+#### 11.6.1.3.配置文件
+
+用户配置文件：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1032,37 +933,271 @@ public class Account implements Serializable {
 
 4.实现配置：查询用户时可以同时包含用户名下的角色信息，查询角色时可以得到角色所赋予的用户相关信息
 
+#### 11.6.2.1.数据库
+
+用户表即11.6.1中的用户表
+
+角色表role：
+
+![1567578536068](E:\typora-document\MyNote\images\1567578536068.png)
+
+中间表user_role：
+
+![1567578595383](E:\typora-document\MyNote\images\1567578595383.png)
+
+中间表的外键关系：中间表包含两个表的主键，这两个主键在中间表里是外键
+
+![1567578696494](E:\typora-document\MyNote\images\1567578696494.png)
 
 
 
+#### 11.6.2.2.实体类：
+
+用户类:通过accounts存储与当前用户对象有关联的账户，使用户类与账户类有关
+
+```java
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+public class User implements Serializable {
+    private Integer id;
+    private String username;
+    private Date birthday;
+    private String sex;
+    private String address;
+    private List<Role> roles;
+    //..get()+..set()
+    //toString()-->不包含roles
+}
+```
 
 
 
+角色类：
+
+```java
+import java.io.Serializable;
+import java.util.List;
+public class Role implements Serializable {
+    private Integer id;
+    private String roleName;
+    private String roleDesc;
+    private List<User> users;
+    //..get()+..set()
+    //toString()-->不包含users
+}
+```
+
+#### 11.6.2.3.配置文件
+
+IUserDao.xml:
+
+```xml
+<mapper namespace="com.itheima.dao.IUserDao">
+
+    <resultMap id="userMap" type="user">
+        <id property="id" column="id"></id>
+        <result column="username" property="username"></result>
+        <result property="address" column="address"></result>
+        <result column="sex" property="sex"></result>
+        <result property="birthday" column="birthday"></result>
+        <collection property="roles" ofType="role">
+            <id column="rid" property="id"></id>
+            <result property="roleName" column="role_name"></result>
+            <result column="role_desc" property="roleDesc"></result>
+        </collection>
+    </resultMap>
+    <!-- 查询所有用户 -->
+    <select id="findAll" resultMap="userMap">
+        select u.*,r.id as rid,r.role_name,r.role_desc from user u
+            left join user_role ur on u.id=ur.uid
+            left join role r on r.id=ur.rid
+    </select>
+</mapper>
+```
 
 
 
+IRoleDao.xml:
+
+```xml
+<mapper namespace="com.itheima.dao.IRoleDao">
+
+    <resultMap id="roleMap" type="role">
+        <id property="id" column="rid"></id>
+        <result column="role_name" property="roleName"></result>
+        <result property="roleDesc" column="role_desc"></result>
+        <collection property="users" ofType="user">
+            <id property="id" column="id"></id>
+            <result column="username" property="username"></result>
+            <result property="address" column="address"></result>
+            <result column="sex" property="sex"></result>
+            <result property="birthday" column="birthday"></result>
+        </collection>
+    </resultMap>
+    <!-- 查询所有角色 -->
+    <select id="findAll" resultMap="roleMap">
+        select r.id as rid,r.role_name,r.role_desc,u.* from role r
+	      left join user_role ur on r.id=ur.rid
+	      left join user u on u.id=ur.uid
+    </select>
+</mapper>
+```
 
 
 
+#### 11.6.2.4.测试类
+
+用户测试类：
+
+```java
+import com.itheima.dao.IUserDao;
+import com.itheima.domain.User;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
+public class UserTest {
+    private InputStream in = null;
+    private SqlSession sql = null;
+    private IUserDao dao = null;
+    @Before
+    public void init() throws Exception{
+        in = Resources.getResourceAsStream("sqlMapConfig.xml");
+        sql = new SqlSessionFactoryBuilder().build(in).openSession();
+        dao = sql.getMapper(IUserDao.class);
+    }
+    @After
+    public void destory() throws Exception{
+        sql.commit();
+        if(sql!=null){
+            sql.close();
+        }
+        if(in!=null){
+            in.close();
+        }
+    }
+    @Test//测试查询所有用户信息的方法
+    public void testfindAll(){
+        List<User> users = dao.findAll();
+        for(User user: users){
+            System.out.println("-------------");
+            System.out.println(user);
+            System.out.println(user.getRoles());
+        }
+    }
+}
+```
 
 
 
+角色测试类：
+
+```java
+@Test//测试查询所有角色信息的方法
+public void testfindAll(){
+    List<Role> roles = dao.findAll();
+    for(Role role: roles){
+        System.out.println("-------------");
+        System.out.println(role);
+        System.out.println(role.getUsers());
+    }
+}
+```
 
 
 
+## 11.7.延迟加载
+
+延迟加载定义：在需要使用数据时才会发起查询，不用时不查询，即按需查询（懒加载）。
+
+立即加载定义：不管用不用，只要调用方法就会发起查询。
+
+四种表关系：一对一，多对一，一对多，多对多
+
+一对一，多对一通常采用立即加载，多对一和多对多通常采用延迟加载
+
+### 11.7.1.一对一
+
+以11.6.1为例进行修改
+
+IAccountDao.xml:以下涉及的部分
+
+```xml
+<resultMap id="accountMap" type="account">
+    <id property="id" column="id"></id>
+    <result column="uid" property="uid"></result>
+    <result property="money" column="money"></result>
+    <association property="user" column="uid" javaType="user" select="com.itheima.dao.IUserDao.findById"></association>
+</resultMap>
+
+<!-- 查询所有角色 -->
+<select id="findAll" resultMap="accountMap">
+    select * from account
+</select>
+```
 
 
 
+mybatis默认延迟加载是不生效的，需要在sqlMapConfig.xml文件进行配置，如下：
 
+```xml
+<configuration>
+    <settings>
+        <setting name="lazyLoadingEnabled" value="true"/><!--这个是必须的-->
+        <setting name="aggressiveLazyLoading" value="true"/><!--这个不是必须的因为版本问题-->
+    </settings>
+```
 
+其他相关配置如数据库表，实体类，测试类，dao层接口都保持原样。
 
+### 11.7.2.一对多
 
+以11.6.1为例进行修改
 
+IUserDao.xml:以下涉及的部分
 
+```xml
+<resultMap id="userMap" type="user">
+    <id property="id" column="id"></id>
+    <result column="username" property="username"></result>
+    <result property="address" column="address"></result>
+    <result column="sex" property="sex"></result>
+    <result property="birthday" column="birthday"></result>
+    <collection property="accounts" ofType="account" select="com.itheima.dao.IAccountDao.findByUid" column="id"></collection>
+</resultMap>
+<!-- 查询所有 -->
+<select id="findAll" resultMap="userMap">
+    select * from user
+</select>
+```
 
+## 11.8.缓存
 
+缓存定义：存在于内存中的临时数据
 
+使用缓存的原因：减少与数据库的交互次数，提高执行效率
 
+适合使用缓存的数据的特征：
+
+​		a.经常查询且修改频率小；
+
+​		b.数据正确与否对最终结果影响不大；（如商品库存，车票）
+
+不适合使用缓存的数据的特征：
+
+​		a.数据改动频率高；
+
+​		b.数据正确与否对最终结果影响很大；（银行汇率，股市牌价）
+
+### 11.8.1.一级缓存
+
+ 一级缓存就是指mybatis中sqlsession中对象的缓存。当我们执行查询后，查询结果同时会存入sqlsession提供的一个区域。这个区域是一个map的结构。当需要再次去执行同样的查询时，mybatis会先到sqlsession中查询是否有数据，如果有就会从sqlsession中取。当sqlsession消失，则一级缓存消失。
 
 
 
