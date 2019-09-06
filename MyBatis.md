@@ -1193,25 +1193,349 @@ IUserDao.xml:以下涉及的部分
 
 ​		a.数据改动频率高；
 
-​		b.数据正确与否对最终结果影响很大；（银行汇率，股市牌价）
+​		b.数据正确与否对最终结果影响很大；（如银行汇率，股市牌价）
 
 ### 11.8.1.一级缓存
 
- 一级缓存就是指mybatis中sqlsession中对象的缓存。当我们执行查询后，查询结果同时会存入sqlsession提供的一个区域。这个区域是一个map的结构。当需要再次去执行同样的查询时，mybatis会先到sqlsession中查询是否有数据，如果有就会从sqlsession中取。当sqlsession消失，则一级缓存消失。
+ 		一级缓存就是指mybatis中sqlsession中对象的缓存。当我们执行查询后，查询结果同时会存入sqlsession提供的一个区域。这个区域是一个map的结构。当需要再次去执行同样的查询时，mybatis会先到sqlsession中查询是否有数据，如果有就会从sqlsession中取。当sqlsession消失，则一级缓存消失。
+
+测试案例：
+
+```java
+User user1 = dao.findById(41);
+//    sql.close();
+//    sql = factory.openSession();
+//    dao = sql.getMapper(IUserDao.class);//关闭sqlsession再重新打开
+sql.clearCache();//清除sqlsession中的缓存
+User user2 = dao.findById(41);
+System.out.println(user1==user2);
+```
+
+
+
+使一级缓存消失的方法有两种，一种是关闭sqlsession再重新打开，另一种就是清除sqlsession中的缓存。
+
+### 11.8.2.二级缓存
+
+​		二级缓存就是mybatis中sqlsessionfactory的缓存，由同一个sqlsessionfactory创建的sqlsession会共享其缓存。
+
+二级缓存使用步骤：
+
+​	1.让mybatis支持二级缓存（在SqlSessionConfig.xml文件中配置）;
+
+配置cacheEnabled：
+
+```xml
+<configuration> 	 
+    <settings>
+        <setting name="cacheEnabled" value="true"></setting>
+    </settings>
+```
+
+
+
+​	2.让当前映射文件支持二级缓存（在IUserDao.xml中配置）；
+
+配置cache：
+
+```xml
+<mapper namespace="com.itheima.dao.IUserDao">
+    <cache/>
+```
+
+
+
+​	3.让当前的操作支持二级缓存（在select标签内配置）
+
+配置useCache：
+
+```xml
+ <!-- 通过id查询用户信息 -->
+<select id="findById" resultType="user" parameterType="Integer" useCache="true">
+    select * from user where id=#{id}
+</select>
+```
+
+
+
+测试方法：
+
+```java
+@Test
+public void testTheFirstCache(){
+    SqlSession sql1 = factory.openSession();
+    IUserDao dao1 = sql1.getMapper(IUserDao.class);
+    User user1 = dao1.findById(41);
+    sql1.close();
+    SqlSession sql2 = factory.openSession();
+    IUserDao dao2 = sql2.getMapper(IUserDao.class);
+    User user2 = dao2.findById(41);
+    System.out.println(user1==user2);
+}
+```
+
+
+
+## 11.9.注解开发
+
+### 11.9.1.增删改查
+
+1.主配置文件sqlMapConfig.xml：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC  "-//mybatis.org/DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="com.itheima.domain"></package>
+    </typeAliases>
+    <!--配置环境-->
+    <environments default="mysql">
+        <!-- 配置mysql环境 -->
+        <environment id="mysql">
+            <!-- 配置事务的类型 -->
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <!-- 配置数据库连接基本信息 -->
+                <property name="driver" value="com.mysql.jdbc.Driver"></property>
+                <property name="url" value="jdbc:mysql://localhost:3306/conn"></property>
+                <property name="username" value="root"></property>
+                <property name="password" value="root"></property>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <package name="com.itheima.dao"></package>
+    </mappers>
+</configuration>
+```
+
+
+
+2.实体类User.java:
+
+```java
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+public class User implements Serializable {
+    private Integer id;
+    private String username;
+    private Date birthday;
+    private String sex;
+    private String address;
+    //..get()+..set()+toString()
+} 
+```
+
+3.接口IUserDao.java：
+
+```java
+import com.itheima.domain.User;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
+
+public interface IUserDao {
+    /**
+     * 查询所有用户
+     * @Select @Insert @Update @Delete
+     */
+    @Select("select * from user")
+    List<User> findAll();
+    @Select("select * from user where id=#{id}")
+    User findById(Integer id);
+    @Select("select * from user where username like #{username}")
+    List<User> findByName(String username);
+    @Select("select count(*) from user")
+    Integer findCount();
+    @Delete("delete  from user where id=#{id}")
+    void delete(Integer id);
+    @Insert("insert into user (username,address,sex,birthday) values(#{username},#{address},#{sex},#{birthday})")
+    void save(User user);
+    @Update("update user set username=#{username},address=#{address},sex=#{sex},birthday=#{birthday} where id=#{id}")
+    void update(User user);
+
+}
+```
+
+
+
+当实体类属性与数据库字段不一致时（如id和userid），可使用Results注解解决这个问题。
+
+```java
+  @Select("select * from user")
+    @Results(id="userMap",value={
+            @Result(id=true,column = "id",property = "id"),
+            @Result(column = "username",property = "userName"),
+            @Result(id=true,column = "sex",property = "sex"),
+            @Result(id=true,column = "address",property = "address"),
+            @Result(id=true,column = "birthday",property = "birthday"),
+    })
+    List<User> findAll();
+    @Select("select * from user where id=#{id}")
+    @ResultMap(value={"userMap"})
+    User findById(Integer id);
+```
 
 
 
 
 
+4.测试类：
+
+```java
+import com.itheima.dao.IUserDao;
+import com.itheima.domain.User;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
+
+public class UserTest {
+
+    public static void main(String[] args) throws Exception{
+        InputStream in = Resources.getResourceAsStream("sqlMapConfig.xml");
+        SqlSessionFactory factory =  new SqlSessionFactoryBuilder().build(in);
+        SqlSession sql = factory.openSession();
+        IUserDao dao = sql.getMapper(IUserDao.class);
+ //        List<User> users = dao.findAll();
+//        for (User user: users) {
+//            System.out.println(user);
+//        }
+//        User user = new User();
+//        user.setUsername("tom3");
+//        user.setAddress("天通苑");
+//        user.setSex("男");
+//        user.setBirthday(new Date());
+//        dao.save(user);
+//        User user = dao.findById(58);
+//        System.out.println(user);
+//        user.setUsername("tom31");
+//        user.setAddress("天通苑");
+//        user.setSex("男");
+//        user.setBirthday(new Date());
+//        dao.update(user);
+//        System.out.println(dao.findById(58));
+//        dao.delete(58);
+//        List<User>  users = dao.findByName("%王%");
+//        for (User user: users) {
+//            System.out.println(user);
+//        }
+        System.out.println(dao.findCount());
+        sql.commit();
+        sql.close();
+        in.close();     
+    }
+}
+```
 
 
 
+### 11.9.2.一对一
+
+IAccountDao.java:
+
+```java
+import com.itheima.domain.Account;
+import org.apache.ibatis.annotations.One;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.mapping.FetchType;
+
+import java.util.List;
+
+public interface IAccountDao {
+
+    /**
+     * 查询所有帐户
+     *
+     */
+    @Select("select * from account")
+    @Results(id="accountMap",value={
+            @Result(id=true,column="id",property = "id"),
+            @Result(column="uid",property = "uid"),
+            @Result(column="money",property = "money"),
+            @Result(property = "user",column = "uid", one = @One(select = "com.itheima.dao.IUserDao.findById",fetchType = FetchType.EAGER))
+    })
+    List<Account> findAll();
+
+    @Select("select * from account where uid=#{uid}")
+    Account findByUid(Integer uid);
+}
+```
 
 
 
+### 11.9.3.多对多
+
+IUserDao.java:
+
+```java
+import com.itheima.domain.User;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
+
+import java.util.List;
+
+public interface IUserDao {
+    /**
+     * 查询所有用户
+     *
+     */
+    @Select("select * from user")
+    @Results(id="userMap",value={
+            @Result(id=true,column="id",property = "id"),
+            @Result(column="username",property = "username"),
+            @Result(column="address",property = "address"),
+            @Result(column="sex",property = "sex"),
+            @Result(column="birthday",property = "birthday"),
+            @Result(property = "accounts",column = "id", many = @Many(select = "com.itheima.dao.IAccountDao.findByUid",fetchType = FetchType.LAZY))
+    })
+    List<User> findAll();
+
+    /**
+     * 通过id查询用户信息
+     * @param id 用户id
+     * @return 用户信息
+     */
+    @Select("select * from user where id = #{id}")
+    User findById(Integer id);
+}
+```
 
 
 
+### 11.9.4.缓存
+
+一级缓存默认开启，二级缓存需要两个步骤，首先是在sqlMapConfig.xml文件汇总的settings的setting标签中配置cacheEnabled，值为true，这个值默认也是true
+
+```xml
+<configuration>
+    <settings>
+       <setting name="cacheEnabled" value="true"></setting>
+    </settings>
+```
+
+
+
+然后是在需要使用的dao层接口进行注解：
+
+```java
+@CacheNamespace(blocking = true)
+public interface IUserDao {
+```
 
 
 
