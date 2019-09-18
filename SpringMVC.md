@@ -618,3 +618,477 @@ public class DateConverter implements Converter<String, Date> {
 <mvc:annotation-driven conversion-service="conversionServiceFactoryBean"/>
 ```
 
+
+
+## 12.5.返回值
+
+jsp:
+
+```jsp
+<a href="user/testString">testString</a><br/>
+<a href="user/testVoid">testVoid</a><br/>
+<a href="user/testForward">testForward</a><br/>
+<a href="user/testModelAndView">testModelAndView</a><br/>
+```
+
+
+
+java:
+
+```java
+@Controller
+@RequestMapping("/user")
+public class UserController {
+
+    @RequestMapping("/testString")//返回值是String类型
+    public String testString(Model model){
+        System.out.println("testString");
+        User user = new User();
+        user.setName("张三");
+        user.setPassword("12312");
+        user.setAge(12);
+        model.addAttribute("user", user);
+        return "success";
+    }
+    @RequestMapping("/testModelAndView")//返回值是ModelAndView类型
+    public ModelAndView testModelView(){
+        System.out.println("testModelAndView");
+        ModelAndView view = new ModelAndView();
+        User user = new User();
+        user.setName("张三");
+        user.setPassword("12312");
+        user.setAge(12);
+        view.addObject("user", user);
+        view.setViewName("success");
+        return view;
+    }
+    @RequestMapping("/testVoid")//返回值是void类型
+    public void testVoid(HttpServletRequest request, HttpServletResponse response) 
+        throws Exception{
+        System.out.println("testvoid");
+        //request.getRequestDispatcher("/WEB-INF/pages/success.jsp")
+        //		 .forward(request, response);//转发返回页面
+        //response.sendRedirect(request.getContextPath()+"/index.jsp");
+        //response.setCharacterEncoding("UTF-8");//重定向到页面
+        response.setContentType("text/html;charset=UTF-8");
+        response.getWriter().print("<h3>张三</h3>");//直接系那个页面输出内容
+        return;
+    }
+    @RequestMapping("/testForward")//根据关键字返回页面
+    public String testForward() throws Exception{
+        System.out.println("testFarword");
+        return "redirect:/index.jsp";
+//      return "forward:/WEB-INF/pages/success.jsp";
+    }
+}
+```
+
+## 12.6.Json
+
+jsp:
+
+```jsp
+	<script src="js/jquery.js"></script>//引入jquery文件
+    <script>
+        $(function(){
+            $("#btn").click(function(){
+                $.ajax({//发送ajax请求
+                    url: "user/testAjax",
+                    contentType: "application/json;charset=UTF-8",
+                    data: '{"name":"tom","password":"1234","age":23}',
+                    dataType: "json",
+                    type: "post",
+                    success: function(data){//处理返回数据
+                        alert(data.toString());
+                        alert(data.name);
+                        alert(data.age);
+                        alert(data.password);
+                    }
+                });
+            });
+           }
+        )
+    </script>
+</head>
+<body>
+    <button id="btn">发送</button>
+</body>
+```
+
+
+
+由于前端控制器会拦截所有访问请求，所以也会拦截对jquery文件的访问，阻止前端控制器对静态资源访问的拦截方法就是在springmvc.xml中配置mvc:resourses这个标签。jquery文件所在文件爱你家要放在wepapp文件夹下面：
+
+```xml
+ <!--设置前端控制器不拦截静态资源并指定哪些不拦截-->
+<mvc:resources location="/js/" mapping="/js/**"/>
+```
+
+
+
+java:
+
+```java
+@RequestMapping("/testAjax")
+public @ResponseBody User testAjax(@RequestBody User user){
+    System.out.println("testAjax");
+    user.setName("jack");
+    user.setAge(10);
+    return user;
+}//@RequestBody将json数据封装到user中，@ResponseBody将user转换为json
+```
+
+
+
+要想将json数据封装进实体类中或将实体类转换为json，需要在pom.xml引入依赖：
+
+```xml
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.9.1</version>
+</dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-core</artifactId>
+    <version>2.9.1</version>
+</dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-annotations</artifactId>
+    <version>2.9.1</version>
+</dependency>
+```
+
+
+
+## 12.7.上传文件
+
+###  12.7.1.传统意义的
+
+jsp:
+
+```jsp
+ <h3>传统文件上传</h3>
+<form action="file/upload" method="post" enctype="multipart/form-data">
+    文件上传:<input type="file" name="upload"/><br/>
+    <input type="submit" value="上传"/>
+</form>
+```
+
+
+
+java:
+
+```java
+@RequestMapping("/upload")
+public String upload(HttpServletRequest request) throws Exception{
+    System.out.println("upload");
+    String path = request.getSession().getServletContext().getRealPath("/uploads/");
+    File file = new File(path);
+    if(!file.exists()){
+        file.mkdirs();
+    }
+    DiskFileItemFactory factory = new DiskFileItemFactory();
+    ServletFileUpload upload = new ServletFileUpload(factory);
+    List<FileItem> files = upload.parseRequest(request);//解析request,得到内容
+    for(FileItem item:files){
+        if(item.isFormField()){///判断是不是普通表单项
+
+        }else{
+            String name = item.getName();//得到文件名
+            item.write(new File( path, name));//实现文件上传
+            item.delete();//删除临时文件
+        }
+    }
+    return "success";
+}
+```
+
+
+
+### 12.7.2.springmvc的
+
+jsp:
+
+```jsp
+<h3>springmvc统文件上传</h3>
+<form action="file/upload2" method="post" enctype="multipart/form-data">
+    文件上传:<input type="file" name="upload"/><br/>
+    <input type="submit" value="上传"/>
+</form>
+```
+
+
+
+springmvc.xml:springmvc专用上传文件的jar包
+
+```xml
+<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+```
+
+
+
+pom.xml:
+
+```xml
+<dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
+```
+
+
+
+java:MultipartFile的实例名必须与表单上传文件部分的name相同
+
+```java
+@RequestMapping("/upload2")
+public String upload2(HttpServletRequest request, MultipartFile upload) throws Exception{
+    System.out.println("upload2");
+    String path = request.getSession().getServletContext().getRealPath("/uploads/");
+    File file = new File(path);
+    if(!file.exists()){
+        file.mkdirs();
+    }
+    String name = upload.getOriginalFilename();//得到文件名
+    upload.transferTo(new File(path, name));
+    return "success";
+}
+```
+
+
+
+### 12.7.3.跨服务器上传
+
+这种方式上传与springmvc的方式相比只需改动java文件。
+
+```java
+@RequestMapping("/upload3")
+public String upload3(MultipartFile upload) throws Exception{
+    System.out.println("upload3");
+    String path = "http://localhost:8080/day02_springmvc_fileupload/upload/";
+
+    String name = upload.getOriginalFilename();//得到文件名
+    Client client = Client.create();
+    WebResource webResource = client.resource(path + name);
+    webResource.put(upload.getBytes());
+    return "success";
+}
+```
+
+
+
+## 12.8.异常处理
+
+index.jsp:
+
+```jsp
+<a href="user/testException">testException</a><br/>
+```
+
+
+
+java:
+
+```java
+@RequestMapping("/testException")
+public String testException() throws SysException{
+    System.out.println("testException");
+    try{
+        int a = 10/0;
+    }catch(Exception e){
+        e.printStackTrace();
+        throw new SysException("查询用户失败！！");
+    }
+    return "success";
+}
+```
+
+
+
+SysException.java:
+
+```java
+public class SysException extends Exception{
+	
+	private String message;
+	
+	public SysException(String message){
+		this.message = message;
+	}
+	
+	public void setMessage(String message){
+		this.message = message;
+	}
+	public String getMessage(){
+		return message;
+	}
+}
+```
+
+
+
+SysExceptionResolver.java:
+
+```java
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class SysExceptionResolver implements HandlerExceptionResolver{
+	
+	public ModelAndView resolveException(HttpServletRequest request,HttpServletResponse response,Object handler,Exception ex){
+		SysException e = null;
+		if(ex instanceof SysException){
+			e = (SysException)ex;
+		}else{
+			e = new SysException("系统正在维护！！");
+		}
+		ModelAndView view = new ModelAndView();
+		view.addObject("errormsg", e.getMessage());
+		view.setViewName("error");
+		return view;
+	}
+}
+```
+
+
+
+springmvc.xml:
+
+```xml
+<context:component-scan base-package="com.itheima.controller"></context:component-scan>
+
+    <!-- 视图解释类 -->
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑  -->
+    </bean>
+	<!--配置异常处理器-->
+	<bean id="sysExceptionResolver" class="com.itheima.exception.SysExceptionResolver"></bean>
+    <!-- 默认的注解映射的支持 -->
+    <mvc:annotation-driven />
+```
+
+
+
+error.jsp:
+
+```jsp
+<body>
+    ${errormsg}
+</body>
+```
+
+
+
+## 12.9.拦截器
+
+### 12.9.1.单个拦截器
+
+index.jsp:
+
+```jsp
+<a href="user/testIntercepter">testIntercepter</a>
+```
+
+
+
+controller:
+
+```java
+@RequestMapping("/testIntercepter")
+public String testIntercepter(){
+    System.out.println("testIntercepter");
+    return "success";
+}
+```
+
+
+
+拦截器：
+
+```java
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MyInterceptor implements HandlerInterceptor{
+	//在controller执行前执行
+	public boolean preHandle(HttpServletRequest request,HttpServletResponse response,Object handler) throws Exception{
+		System.out.println("interceptor执行了11--前面");
+		return true;
+     //request.getRequestDispacher("/WEB-INF/pages/error.jsp").forword(request,response);
+        //return false;//这样页面 跳转到success.jsp，而是跳转到error.jsp
+	}
+    
+    //在controller执行后，jsp页面前执行
+	public void postHandle(HttpServletRequest request,HttpServletResponse response,Object handler,ModelAndView view) throws Exception{
+		System.out.println("interceptor执行了11--后面");
+	}//这里可以用上述方式跳转页面，但是无返回值
+    //在jsp页面后执行
+	public void afterCompletion(HttpServletRequest request,HttpServletResponse response,Object handler,Exception e) throws Exception{
+		System.out.println("interceptor执行了11--最后");
+	}//这里不可以跳转页面，无返回值
+}
+```
+
+
+
+在springmvc.xml中配置拦截器：
+
+```xml
+<mvc:interceptors>
+    <mvc:interceptor>
+        <mvc:mapping path="/user/*"/>
+        <bean class="com.itheima.interceptor.MyInterceptor"/>
+    </mvc:interceptor>
+</mvc:interceptors>
+```
+
+
+
+### 12.9.2.多个拦截器
+
+拦截器执行顺序以在springmvc.xml中配置顺序为主。
+
+如下：
+
+```xml
+<mvc:interceptors>
+    <mvc:interceptor>
+        <mvc:mapping path="/user/*"/>
+        <bean class="com.itheima.interceptor.MyInterceptor"/>
+    </mvc:interceptor>
+    <mvc:interceptor>
+        <mvc:mapping path="/**"/>
+        <bean class="com.itheima.interceptor.MyInterceptor2"/>
+    </mvc:interceptor>
+</mvc:interceptors>
+```
+
+
+
+此时执行顺序是：
+
+先执行MyInterceptor的preHandle()方法，然后MyInterceptor2的preHandle()方法，
+
+随后是MyInterceptor2的postHandle()方法，MyInterceptor的preHandle()方法，
+
+最后是MyInterceptor2的afterCompletion()方法，MyInterceptor的afterCompletion()方法，
+
+
+
+
+
+
+
