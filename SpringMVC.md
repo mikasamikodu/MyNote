@@ -390,7 +390,7 @@ public class ParamController {
 
 请求参数绑定就是指jsp页面请求时携带参数，可以通过超链接，表单等方式绑定，携带的参数类型有基本数据类型，集合数据类型，javabean的数据类型。jsp请求参数需要java方法中的参数名称一致。
 
-### 12.3.1.超链接，基本数据类型
+### 12.3.1.基本数据类型超链接
 
 jsp：
 
@@ -416,7 +416,7 @@ public String testParam(String username,Integer password){
 
 
 
-### 12.3.2.表单，javabean类型
+### 12.3.2.javabean类型表单
 
 jsp:
 
@@ -458,7 +458,7 @@ public String saveAccount(Account account){
 
 
 
-### 12.3.3.表单，javabean类型2
+### 12.3.3.javabean类型表单2
 
 javabean内含有javabean（account中含有user）：
 
