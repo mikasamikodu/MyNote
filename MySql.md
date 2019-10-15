@@ -68,6 +68,22 @@
 
 
 
+## 1.5.语法规范
+
+1.不区分大小写，建议关键字大写，列名、表名小写；
+
+2.每条命令以分号(;)结尾；
+
+3.每条命令根据需要进行缩进或换行；
+
+4.写sql查询语句时，表名、列名可以用着重号(``)进行包裹，以表示这不是一个关键字；
+
+5.注释
+
++ 单行注释：#注释
++ 单行注释：-- 注释(-与注释之间有空格)
++ 多行注释：/* 注释 */
+
 # 2.常见命令CRUD
 
 ## 2.1.数据库
@@ -209,4 +225,57 @@ delete from test where id=1;
 
 
 
-P15
+# 3.SqlYong的使用
+
+1.修改查询部分字体大小方法：
+
++ 进入sqlyong,连接数据库，点击工具->首选项->字体编辑器，然后找到对应部分的	字体进行修改即可;
+
++ 在查询部分，按住ctrl键，然后滑动鼠标滚轮，同样可以修改字体大小；
+
+  
+
+# 4.DQL查询语言
+
+## 4.1.起别名
+
+```sql
+select id as tid from test;
+--为id起别名为tid
+select id tid from test;
+```
+
+在列名后使用as关键字或空格来起别名。
+
+![1570871313471](E:\typora-document\MyNote\images\1570871313471.png)
+
+![1570871630159](E:\typora-document\MyNote\images\1570871630159.png)
+
+## 4.2.去重
+
+```sql
+select distinct(name)  from test;
+```
+
+使用distinct关键字包裹列名即可去重。
+
+![1570871829476](E:\typora-document\MyNote\images\1570871829476.png)
+
+![1570871876571](E:\typora-document\MyNote\images\1570871876571.png)
+
+![1570874235165](E:\typora-document\MyNote\images\1570874235165.png)
+
+# 5.DML操作语言
+
+
+
+# 6.DDL数据库操作语言
+
+
+
+# 7.TCL事务语言
+
+
+
+
+
