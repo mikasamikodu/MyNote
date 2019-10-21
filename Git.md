@@ -38,7 +38,7 @@ ls lA|less:分屏罗列所有资源（包含隐藏资源）
 
 pwd:查看当前路径
 
-![1555901276942](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1555901276942.png)
+![1571666978423](D:\MyNote\images\1571666978423.png)
 
 ## 5.3. 设置签名
 
