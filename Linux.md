@@ -905,7 +905,7 @@ Swap：用于临时内存，当系统真实内存不够用的时候可以临时�
 
 ![img](D:\MyNote\images\wps10.jpg)
 
-## 6.3、whoami指令
+## 6.3.whoami指令
 
 作用：“我是谁？”显示当前登录的用户名，一般用于shell脚本，用于获取当前操作的用户名方便记录日志。
 语法：#whoami
@@ -999,8 +999,114 @@ M：表示将结果按照内存（MEM）从高到低进行降序排列；
 P：表示将结果按照CPU使用率从高到低进行降序排列；
 1：当服务器拥有多个cpu的时候可以使用“1”快捷键来切换是否展示显示各个cpu的详细信息；
 
-M：表示将结果按照内存（MEM）从高到低进行降序排列；
+## 6.6.du -sh指令
+作用：查看目录的真实大小
+语法：#du -sh 目录路径
+选项含义：
+	-s：summaries，只显示汇总的大小
+	-h：表示以高可读性的形式进行显示
 
-P：表示将结果按照CPU使用率从高到低进行降序排列；
+案例：统计“/root/yunweihenniux”目录的实际大小
 
-1：当服务器拥有多个cpu的时候可以使用“1”快捷键来切换是否展示显示各个cpu的详细信息；
+
+案例：统计“/etc”目录实际大小
+
+案例：统计“/root/yunweihenniux”目录的实际大小
+
+![img](D:\MyNote\images\wps21.jpg) 
+
+案例：统计“/etc”目录实际大小
+
+![img](D:\MyNote\images\wps22.jpg) 
+
+## 6.7.find指令
+作用：用于查找文件（其参数有55个之多）
+语法：#find 路径范围 选项 选项的值
+选项：
+	-name：按照文档名称进行搜索（支持模糊搜索）
+	-type：按照文档的类型进行搜索
+		文档类型：“-”表示文件（在使用find的时候需要用f来替换），“d”表示文件夹
+
+案例：使用find来搜索httpd.conf
+#find / -name httpd.conf
+
+案例：搜索etc目录下所有的conf后缀文件
+#find /etc -name *.conf
+
+案例：使用find来搜索/etc/sane.d/目录下所有的文件
+#find /etc/sane.d/ -type f
+
+案例：使用find来搜索/etc/目录下所有的文件夹
+#find /etc -type d
+
+![img](file:///C:\Windows\TEMP\ksohtml12848\wps6.jpg) 
+
+## 6.8.service指令（重点）
+
+作用：用于控制一些软件的服务启动/停止/重启
+语法：#service 服务名 start/stop/restart
+
+例如：需要启动本机安装的Apache（网站服务器软件），其服务名httpd
+#service httpd start
+
+通过ps命令来检查httpd服务是否启动：
+
+例如：需要启动本机安装的Apache（网站服务器软件），其服务名httpd
+
+\#service httpd start
+
+![img](D:\MyNote\images\wps17.jpg) 
+
+通过ps命令来检查httpd服务是否启动：
+
+![img](D:\MyNote\images\wps82.jpg)
+
+## 6.9.kill指令（重点）
+
+作用：表示杀死进程		（当遇到僵尸进程或者出于某些原因需要关闭进程的时候）
+语法：#kill  进程PID		（语法需要配合ps一起使用）
+
+案例：需要kill掉Apache的进程
+
+![img](D:\MyNote\images\wps39.jpg) 
+
+与kill命令作用相似但是比kill更加好用的杀死进程的命令：killall
+语法：#killall 进程名称
+
+![img](D:\MyNote\images\wps120.jpg)
+
+## 6.10.ifconfig指令（重点）
+
+作用：用于操作网卡相关的指令。
+简单语法：#ifconfig		（获取网卡信息）
+
+Eth0表示Linux中的一个网卡，eth0是其名称。Lo（loop，本地回还网卡，其ip地址一般都是127.0.0.1）也是一个网卡名称。
+
+![img](D:\MyNote\images\wps11.jpg) 
+
+注意：inet addr就是网卡的ip地址。信息）
+
+![img](D:\MyNote\images\wps124.jpg) 
+
+## 6.11.reboot指令
+
+作用：重新启动计算机		
+语法1：#reboot		重启
+语法2：#reboot  -w   模拟重启，但是不重启（只写关机与开机的日志信息）但是不重启（只写关机与开机的日志信息）
+
+## 6.12.shutdown指令
+
+作用：关机			（慎用）
+语法1：#shutdown -h now	“关机提示”  或者  #shutdown  -h 15:25  “关机提示”
+案例：设置Linux系统关机时间在12:00
+
+
+如果想要取消关机计划的话，则可以按照以下方式去尝试：
+①针对于centos7.x之前的版本：ctrl+c
+②针对于centos7.x（包含）之后的版本：#shutdown  -c
+
+除了shutdown关机以外，还有以下几个关机命令：
+#init 0
+#halt
+
+![img](D:\MyNote\images\wps133.jpg) 
