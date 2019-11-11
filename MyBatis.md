@@ -359,7 +359,7 @@ public class User implements Serializable {
 
 表user
 
-![1567134584113](E:\typora-document\MyNote\images\1567134584113.png)
+![1567134584113](D:\MyNote\images\1567134584113.png)
 
 #### 11.3.4.3.主配置文件
 
@@ -802,15 +802,15 @@ IUserDao.xml：
 
 用户表user：
 
-![1567479105106](E:\typora-document\MyNote\images\1567479105106.png)
+![1567479105106](D:\MyNote\images\1567479105106.png)
 
 账户表account：
 
-![1567479167397](E:\typora-document\MyNote\images\1567479167397.png)
+![1567479167397](D:\MyNote\images\1567479167397.png)
 
 账户表外键关系：
 
-![1567578952033](E:\typora-document\MyNote\images\1567578952033.png)
+![1567578952033](D:\MyNote\images\1567578952033.png)
 
 用户表与账户表通过账户表的外键进行关联。
 
@@ -939,15 +939,15 @@ public class Account implements Serializable {
 
 角色表role：
 
-![1567578536068](E:\typora-document\MyNote\images\1567578536068.png)
+![1567578536068](D:\MyNote\images\1567578536068.png)
 
 中间表user_role：
 
-![1567578595383](E:\typora-document\MyNote\images\1567578595383.png)
+![1567578595383](D:\MyNote\images\1567578595383.png)
 
 中间表的外键关系：中间表包含两个表的主键，这两个主键在中间表里是外键
 
-![1567578696494](E:\typora-document\MyNote\images\1567578696494.png)
+![1567578696494](D:\MyNote\images\1567578696494.png)
 
 
 

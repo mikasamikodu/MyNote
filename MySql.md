@@ -2,7 +2,7 @@
 
 # 1.相关操作
 
-## 1.1配置文件
+## 1.1.配置文件
 
 ### 1.1.1.my.ini
 
@@ -58,13 +58,13 @@
 
 1.在控制台进入数据库后输入`select version();` 回车即可查看mysql数据库版本。
 
-![1570453121406](E:\typora-document\MyNote\images\1570453121406.png)
+![1570453121406](D:\MyNote\images\1570453121406.png)
 
 
 
 2.在控制台输入`mysql --version` 回车即可查看mysql数据库版本。
 
-![1570453216447](E:\typora-document\MyNote\images\1570453216447.png)
+![1570453216447](D:\MyNote\images\1570453216447.png)
 
 
 
@@ -84,7 +84,7 @@
 + 单行注释：-- 注释(-与注释之间有空格)
 + 多行注释：/* 注释 */
 
-# 2.常见命令CRUD
+# 2.常见命令
 
 ## 2.1.数据库
 
@@ -96,7 +96,7 @@ show databases;
 
 查看mysql中有哪些数据库（名称）。
 
-![1570450189754](E:\typora-document\MyNote\images\1551872356868.png)
+![1570450189754](D:\MyNote\images\1551872356868.png)
 
 
 
@@ -110,7 +110,7 @@ use test;
 
 使用test数据库;
 
-![1570450623872](E:\typora-document\MyNote\images\1570450623872.png)
+![1570450623872](D:\MyNote\images\1570450623872.png)
 
 
 
@@ -122,7 +122,7 @@ select database();
 
 查看当前所在数据库；
 
-![1570451191134](E:\typora-document\MyNote\images\1570451191134.png)
+![1570451191134](D:\MyNote\images\1570451191134.png)
 
 
 
@@ -136,7 +136,7 @@ show tables;
 
 在当前数据库查询当前数据库内所有数据库表名称并显示；
 
-![1570450855805](E:\typora-document\MyNote\images\1570450855805.png)
+![1570450855805](D:\MyNote\images\1570450855805.png)
 
 
 
@@ -148,7 +148,7 @@ show tables from mysql;
 
 在当前数据库查询其他数据库内所有数据库表名称并显示；
 
-![1570451040445](E:\typora-document\MyNote\images\1570451040445.png)
+![1570451040445](D:\MyNote\images\1570451040445.png)
 
 
 
@@ -163,7 +163,7 @@ create table test(
 
 创建名为test的数据库表，内部有2个字段，一个是int类型的名为id的字段，一个是varchar类型长度为20名为name的字段。
 
-![1570451708754](E:\typora-document\MyNote\images\1570451708754.png)
+![1570451708754](D:\MyNote\images\1570451708754.png)
 
 
 
@@ -175,7 +175,7 @@ desc test;
 
 查看某表的表结构。
 
-![1570451855709](E:\typora-document\MyNote\images\1570451855709.png)
+![1570451855709](D:\MyNote\images\1570451855709.png)
 
 
 
@@ -187,7 +187,7 @@ select * from test;
 
 搜索test表并显示表内每个字段上的数据。
 
-![1570452036520](E:\typora-document\MyNote\images\1570452036520.png)
+![1570452036520](D:\MyNote\images\1570452036520.png)
 
 
 
@@ -199,7 +199,7 @@ insert into test (id,name)values(1,'tom');
 
 向数据库表中插入数据，插入id和name这两个字段，对应值为1和tom。
 
-![1570452207383](E:\typora-document\MyNote\images\1570452207383.png)
+![1570452207383](D:\MyNote\images\1570452207383.png)
 
 ### 2.2.7.更新表数据
 
@@ -209,7 +209,7 @@ update test set name='rose' where id=1;
 
 更新数据库表test中id=1所在行的数据，修改name所在列的值为rose。
 
-![1570452542696](E:\typora-document\MyNote\images\1570452542696.png)
+![1570452542696](D:\MyNote\images\1570452542696.png)
 
 
 
@@ -221,23 +221,11 @@ delete from test where id=1;
 
 从数据库表test中删除id=1所在行的一行数据。
 
-![1570452766177](E:\typora-document\MyNote\images\1570452766177.png)
+![1570452766177](D:\MyNote\images\1570452766177.png)
 
 
 
-# 3.SqlYong的使用
-
-1.修改查询部分字体大小方法：
-
-+ 进入sqlyong,连接数据库，点击工具->首选项->字体编辑器，然后找到对应部分的	字体进行修改即可;
-
-+ 在查询部分，按住ctrl键，然后滑动鼠标滚轮，同样可以修改字体大小；
-
-  
-
-# 4.DQL查询语言
-
-## 4.1.起别名
+## 2.3.起别名
 
 ```sql
 select id as tid from test;
@@ -247,11 +235,13 @@ select id tid from test;
 
 在列名后使用as关键字或空格来起别名。
 
-![1570871313471](E:\typora-document\MyNote\images\1570871313471.png)
+![1570871313471](D:\MyNote\images\1570871313471.png)
 
-![1570871630159](E:\typora-document\MyNote\images\1570871630159.png)
+![1570871630159](D:\MyNote\images\1570871630159.png)
 
-## 4.2.去重
+## 2.4.去重
+
+### 2.4.1.作用于单列
 
 ```sql
 select distinct(name)  from test;
@@ -259,11 +249,90 @@ select distinct(name)  from test;
 
 使用distinct关键字包裹列名即可去重。
 
-![1570871829476](E:\typora-document\MyNote\images\1570871829476.png)
+![1570871829476](D:\MyNote\images\1570871829476.png)
 
-![1570871876571](E:\typora-document\MyNote\images\1570871876571.png)
+![1570871876571](D:\MyNote\images\1570871876571.png)
 
-![1570874235165](E:\typora-document\MyNote\images\1570874235165.png)
+![1570874235165](D:\MyNote\images\1570874235165.png)
+
+### 2.4.2.作用于多列
+
+```mysql
+select distinct name, id from A
+```
+
+执行后结果如下：
+
+![img](D:\MyNote\images\03222745-35f76ba1357f4add8cef03b246d9aee8.png)
+
+实际上是根据name和id两个字段来去重的，这种方式Access和SQL Server同时支持。
+
+```mysql
+select distinct xing, ming from B
+```
+
+返回如下结果：
+
+![img](D:\MyNote\images\33509-20151217095032599-428642167.png)
+
+返回的结果为两行，这说明distinct并非是对xing和ming两列“字符串拼接”后再去重的，而是分别作用于了xing和ming列。
+
+### 2.4.3.COUNT统计
+
+```mysql
+select count(distinct name) from A;	  --表中name去重后的数目， SQL Server支持，而Access不支持
+```
+
+count是不能统计多个字段的，下面的SQL在SQL Server和Access中都无法运行。
+
+```mysql
+select count(distinct name, id) from A;
+```
+
+若想使用，请使用嵌套查询，如下：
+
+```mysql
+select count(*) from (select distinct xing, name from B) AS M;
+```
+
+### 2.4.4.distinct须放在开头
+
+```mysql
+select id, distinct name from A;   --会提示错误，因为distinct必须放在开头
+```
+
+### 2.4.5.其他
+
+distinct语句中select显示的字段只能是distinct指定的字段，其他字段是不可能出现的。例如，假如表A有“备注”列，如果想获取distinc name，以及对应的“备注”字段，想直接通过distinct是不可能实现的。但可以通过其他方法实现
+
+## 2.5.+号作用
+
++号在sql中是运算符，分三种情况：
+
+1.当+号两侧都是数字时，则两侧数字直接相加即可；
+
+2.当+号两侧至少一侧为字符时，会试图将字符转换为数字，两侧都成功转换为数字则相加即可；转换失败的一侧记为0，然后两侧相加即可；
+
+3.当+号有至少一侧为null时，结果一定时null；
+
+# 3.SqlYong的使用
+
+1.修改查询部分字体大小方法：
+
++ 进入sqlyong,连接数据库，点击工具->首选项->字体编辑器，然后找到对应部分的	字体进行修改即可;
+
++ 在查询部分，按住ctrl键，然后滑动鼠标滚轮，同样可以修改字体大小；
+
+
+# 4.DQL查询语言
+
+1.条件查询
+
+```mysql
+select 查询列表 from 表名 where 筛选条件
+```
+
+先执行from部分找到表数据，然后是where部分筛选数据，最后是select显示数据。
 
 # 5.DML操作语言
 
@@ -277,11 +346,9 @@ select distinct(name)  from test;
 
 
 
-over不能单独使用，要和分析函数：rank(),dense_rank(),row_number()等一起使用。
-其参数：over（partition by columnname1 order by columnname2）
-含义：按columname1指定的字段进行分组排序，或者说按字段columnname1的值进行分组排序。
-例如：employees表中，有两个部门的记录：department_id ＝10和20
-select department_id，rank（） over（partition by department_id order by salary) from employees就是指在部门10中进行薪水的排名，在部门20中进行薪水排名。如果是partition by org_id，则是在整个公司内进行排名。
+# 8.常见函数
+
+## 8.1.concat
 
 以下是个人见解：
 
@@ -289,3 +356,6 @@ sql中的over函数和row_numbert()函数配合使用，可生成行号。可对
 
 执行语句：select row_number() over(order by AID DESC) as rowid,* from bb
 
+over不能单独使用，要和分析函数：rank(),dense_rank(),row_number()等一起使用。 其参数：over（partition by columnname1 order by columnname2） 含义：按columname1指定的字段进行分组排序，或者说按字段columnname1的值进行分组排序。 例如：employees表中，有两个部门的记录：department_id ＝10和20
+
+select department_id，rank（） over（partition by department_id order by salary) from employees就是指在部门10中进行薪水的排名，在部门20中进行薪水排名。如果是partition by org_id，则是在整个公司内进行排名。

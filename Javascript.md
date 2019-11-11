@@ -67,7 +67,7 @@
 div{box-shadow: 10px 10px 5px #888888;}
 ```
 
-效果：![1552380660631](E:\typora-document\MyNote\images\1552380660631.png)
+效果：![1552380660631](D:\MyNote\images\1552380660631.png)
 
 实例2
 
@@ -75,7 +75,7 @@ div{box-shadow: 10px 10px 5px #888888;}
 div{box-shadow: 1px 10px 5px #888888;}
 ```
 
-效果：![1552380763966](E:\typora-document\MyNote\images\1552380763966.png)
+效果：![1552380763966](D:\MyNote\images\1552380763966.png)
 
 实例3
 
@@ -83,7 +83,7 @@ div{box-shadow: 1px 10px 5px #888888;}
 div{box-shadow: 10px 1px 5px #888888;}
 ```
 
-效果：![1552380826847](E:\typora-document\MyNote\images\1552380826847.png)
+效果：![1552380826847](D:\MyNote\images\1552380826847.png)
 
 实例4
 
@@ -91,4 +91,4 @@ div{box-shadow: 10px 1px 5px #888888;}
 div{box-shadow: 10px 1px 5px #ccc;}
 ```
 
-效果：![1552380910043](E:\typora-document\MyNote\images\1552380910043.png)
+效果：![1552380910043](D:\MyNote\images\1552380910043.png)

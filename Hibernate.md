@@ -2,11 +2,11 @@
 
 ## 8.1.介绍
 
-![1559557610884](E:\typora-document\MyNote\images\1559557610884.png)
+![1559557610884](D:\MyNote\images\1559557610884.png)
 
 
 
-![1559557700143](E:\typora-document\MyNote\images\1559557700143.png)
+![1559557700143](D:\MyNote\images\1559557700143.png)
 
 ## 8.2.初次使用
 
@@ -24,7 +24,7 @@
 
 - 连接mysql用的jdbc的jar包；
 
-  ![img](E:\typora-document\MyNote\images\wps1.jpg)
+  ![img](D:\MyNote\images\wps1.jpg)
 
 3.创建数据库表；
 

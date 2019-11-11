@@ -78,5 +78,5 @@ ResourceBundle resource = new PropertyResourceBundle(inStream);
 
 文件配置如下：
 
-![properties](E:\typora-document\MyNote\images\properties.png)
+![properties](D:\MyNote\images\properties.png)
 
