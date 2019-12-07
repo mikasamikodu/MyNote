@@ -3457,7 +3457,7 @@ echo "两数之和为 : $val"
 
 ### 15.1.1.什么是数据库
 
-![img](D:\MyNote\wps1x.jpg) 
+![img](D:\MyNote\images\wps1x.jpg) 
 
 如果一个项目是动态（内容会变化的，网页后缀.jsp、.php、.shtml等）内容的话，则数据库是必不可少的一个环节。
 
@@ -3513,13 +3513,13 @@ MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，
 
 ①先将软件包传递到服务器上“/usr/local/src”
 
-![img](D:\MyNote\wps2x.jpg) 
+![img](D:\MyNote\images\wps2x.jpg) 
 
 ②解压需要安装的源码包
 
 \# tar -zxvf ncurses-6.1.tar.gz
 
-![img](D:\MyNote\wps3x.jpg) 
+![img](D:\MyNote\images\wps3x.jpg) 
 
 ③切换到源码文件夹，然后执行后续操作
 
@@ -3535,19 +3535,19 @@ MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，
 
 \# ./configure --prefix=/usr/local/ncurses
 
-![img](D:\MyNote\wps4x.jpg) 
+![img](D:\MyNote\images\wps4x.jpg) 
 
 \# make
 
-![img](D:\MyNote\xwps5.jpg) 
+![img](D:\MyNote\images\xwps5.jpg) 
 
 \# make install
 
-![img](D:\MyNote\xwps6.jpg) 
+![img](D:\MyNote\images\xwps6.jpg) 
 
 成功之后查看目录（可选）：
 
-![img](D:\MyNote\xwps7.jpg) 
+![img](D:\MyNote\images\xwps7.jpg) 
 
 2. **二进制包（rpm）**
 
@@ -3567,21 +3567,15 @@ MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，
 
 #rpm -qf 文件路径			【查询指定文件属于哪个包】
 
-![img](D:\MyNote\xwps8.jpg) 
-
- 
+![img](D:\MyNote\images\xwps8.jpg) 
 
 案例：使用二进制包安装lynx（一款纯命令行的浏览器）
 
 在光盘中就有这个包
 
-![img](D:\MyNote\xwps9.jpg) 
-
- 
+![img](D:\MyNote\images\xwps9.jpg) 
 
 例如查看百度：#lynx --dump [www.baidu.com](http://www.baidu.com)
-
- 
 
 c. yum等傻瓜式安装
 
@@ -3590,8 +3584,6 @@ c. yum等傻瓜式安装
 缺点: 完全丧失了自定义性
 
 注意：如果不更改软件来源的情况下，是需要联网才能使用yum的。
-
- 
 
 常用的yum指令：
 
@@ -3605,21 +3597,15 @@ c. yum等傻瓜式安装
 
 \#yum [-y]  remove  包名		卸载指定的包
 
- 
-
 案例：使用yum指令卸载火狐浏览器
 
 \#yum remove firefox
 
-![img](D:\MyNote\xwps10.jpg) 
-
- 
+![img](D:\MyNote\images\xwps10.jpg) 
 
 案例：使用yum指令安装火狐浏览器
 
 \#yum install firefox
-
- 
 
 ### 2、安装MySQL（重点）
 
@@ -3629,23 +3615,21 @@ c. yum等傻瓜式安装
 
 \#yum install mysql-server
 
-![img](D:\MyNote\xwps11.jpg) 
-
- 
+![img](D:\MyNote\images\xwps11.jpg) 
 
 完成的：
 
-![img](D:\MyNote\xwps12.jpg) 
+![img](D:\MyNote\images\xwps12.jpg) 
 
 #### 2.2、MySQL初始化
 
 \#service mysqld start
 
-![img](D:\MyNote\xwps13.jpg) 
+![img](D:\MyNote\images\xwps13.jpg) 
 
 查看端口号（默认端口号3306）：
 
-![img](D:\MyNote\xwps14.jpg) 
+![img](D:\MyNote\images\xwps14.jpg) 
 
  
 
@@ -3675,7 +3659,7 @@ Remove test database and access to it?是否移除测试数据库（建议先不
 
 Reload privilege tables now?是否重新加载权限表（当我们更改了mysql用户相关的信息之后建议去重载权限）
 
-![img](D:\MyNote\xwps15.jpg) 
+![img](D:\MyNote\images\xwps15.jpg) 
 
 #### 2.3、MySQL的启动控制
 
@@ -3699,4 +3683,4 @@ mysql > exit
 
 配置文件：/etc/my.cnf
 
-![img](D:\MyNote\xwps16.jpg) 
+![img](D:\MyNote\images\xwps16.jpg) 
