@@ -84,6 +84,49 @@
 + 单行注释：-- 注释(-与注释之间有空格)
 + 多行注释：/* 注释 */
 
+## 1.6.MySql5.7版本安装
+
+1、双击版本
+
+2、选中<I accept ........>  再点击next
+
+3、选中最下方的Custom   在点击next
+
+4、依次点击MySQL Servers---->MySQL Server--->.....MySQL Server 5.7.17-x64 点击中间向右箭头
+
+ ![img](D:\MyNote\images\2019011320430378.png) 
+
+5、仅仅选中两个选项MySQL Server 和 Client Programs   点击next
+
+6、点击Execute 等待几分钟
+
+7、直到出现绿色小对号说明安装成功，点击next
+
+8、确保Config Type 选项中的是Development Machine 点击next ![](D:\MyNote\images\image-20191206172509520.png) 
+
+9、设置一个密码，这是MySQL的密码要牢记
+
+ ![img](D:\MyNote\images\20190113204452291.png) 
+
+ 10、WindowsServer Name选项为mysql实例名称，无需更改Start the MySQLServer at System Startup选项为是否开机自启，可以不勾选
+
+ ![img](D:\MyNote\images\2019011320312039.png) 
+
+11、如图所示，点击next
+
+ ![img](D:\MyNote\images\20190113203224533.png) 
+
+12、 点击Execute，等待几分钟；直到全变绿色小对勾，点击Finish
+
+ ![img](D:\MyNote\images\20190113203352395.png) 
+
+13、 直到完成
+
+二、配置环境变量
+1、MySQL的安装路径
+
+ ![img](D:\MyNote\images\20190113204029997.png) 
+
 # 2.常见命令
 
 ## 2.1.数据库
