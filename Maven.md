@@ -6,13 +6,63 @@ maven是一款服务于java平台的自动化构建工具
 
 ## 9.2.Maven的安装与配置
 
-1.在官网下载Maven，然后解压；
+1.在[官网](https://maven.apache.org/download.cgi)下载Maven，然后解压；
+
+![img](D:\MyNote\images\1277268-20180828144634391-136169286.png) 
 
 2.配置环境变量。配置M2_HOME或MAVEN_HOME，值为bin目前的路径，然后在Path变量中加入
 
 值%M2_HOME%\bin；
 
-3.测试是否环境变量配置成功，在命令行写入命令`mvn -v` 即可完成测试；
+ ![img](D:\MyNote\images\1277268-20180828144830813-2051340070.png) 
+
+
+
+ ![img](D:\MyNote\images\1277268-20180828144926859-1065126532.png) 
+
+3.修改配置文件
+
+配置文件是./conf/setting.xml
+
+3.1.配置创建项目时默认的jdk版本，在<profiles></profiles>标签中添加<profile></profile>,这样每次update项目的时候就会变为默认的jdk版本，这里是默认全局设置的编译版本 
+
+```xml
+<profile>    
+        <id>jdk-1.7</id>    
+        <activation>    
+            <activeByDefault>true</activeByDefault>    
+            <jdk>1.7</jdk>    
+        </activation>    
+        <properties>    
+            <maven.compiler.source>1.7</maven.compiler.source>    
+            <maven.compiler.target>1.7</maven.compiler.target>    
+            <maven.compiler.compilerVersion>1.7</maven.compiler.compilerVersion>    
+        </properties>    
+    </profile> 
+```
+
+
+
+3.2.配置私有仓库的位置（maven所有的本地jar包都会放在私有仓库里面），其默认位置是当前用户目录下.m2文件夹中。通过修改下面的路径可以修改本地仓库的位置。
+
+　　　　![img](D:\MyNote\images\1277268-20180828151114145-1497162773.png)
+
+3.3.加快打包速度或工程创建速度方法，将maven的镜像修改为阿里的镜像。修改maven的setting.xml文件。内容：
+
+```xml
+<mirrors>
+    <mirror>
+        <id>alimaven</id>
+        <name>aliyun maven</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        <mirrorOf>central</mirrorOf>        
+    </mirror>
+</mirrors>
+```
+
+
+
+4.测试是否环境变量配置成功，在命令行写入命令`mvn -v` 即可完成测试；
 
 ## 9.3.创建Maven工程
 
@@ -310,21 +360,3 @@ a工程中有logging-1.1的依赖，b工程依赖了a工程，而b工程使用�
 2.user settings:修改相关路径，更换为自己安装的maven的settings.xml中位置，目的是更换本地仓库位置
 
 ![1563779836316](D:\MyNote\images\1563779836316.png)
-
-
-
-技巧：
-
-加快打包速度或工程创建速度方法，将maven的镜像修改为阿里的镜像。修改maven的setting.xml文件。内容：
-
-```xml
-<mirrors>
-    <mirror>
-        <id>alimaven</id>
-        <name>aliyun maven</name>
-        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-        <mirrorOf>central</mirrorOf>        
-    </mirror>
-</mirrors>
-```
-

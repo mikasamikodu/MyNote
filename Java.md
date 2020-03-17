@@ -80,3 +80,68 @@ ResourceBundle resource = new PropertyResourceBundle(inStream);
 
 ![properties](D:\MyNote\images\properties.png)
 
+# a.string
+
+## 1.indexOf()
+
+indexOf() 方法有以下四种形式：
+
+public int indexOf(int ch): 返回指定字符在字符串中第一次出现处的索引，如果此字符串中没有这样的字符，则返回 -1。
+
+public int indexOf(int ch, int fromIndex): 返回从 fromIndex 位置开始查找指定字符在字符串中第一次出现处的索引，如果此字符串中没有这样的字符，则返回 -1。
+
+int indexOf(String str): 返回指定字符在字符串中第一次出现处的索引，如果此字符串中没有这样的字符，则返回 -1。
+
+int indexOf(String str, int fromIndex): 返回从 fromIndex 位置开始查找指定字符在字符串中第一次出现处的索引，如果此字符串中没有这样的字符，则返回 -1。
+
+```java
+
+public class Test {
+	public static void main(String[] args) {
+		String Str = new String("hello,this is a test");
+        String SubStr1 = new String("is");
+        String SubStr2 = new String("test");
+ 
+        System.out.print("查找字符i 第一次出现的位置 :" );
+        System.out.println(Str.indexOf( 'i' ));
+        System.out.print("从第10个位置查找字符 s 第一次出现的位置 :" );
+        System.out.println(Str.indexOf( 's', 10 ));
+        System.out.print("子字符串 SubStr1 第一次出现的位置:" );
+        System.out.println( Str.indexOf( SubStr1 ));
+        System.out.print("从第十五个位置开始搜索子字符串 SubStr1 第一次出现的位置 :" );
+        System.out.println( Str.indexOf( SubStr1, 11 ));
+        System.out.print("子字符串 SubStr2 第一次出现的位置 :" );
+        System.out.println(Str.indexOf( SubStr2 ));
+	}
+```
+
+
+
+运行结果如下：
+
+ ![img](D:\MyNote\images\20180808093551523.jpg) 
+
+##  2.subString()
+
+ **1.通过subString()方法来进行字符串截取。** 
+subString通过不同的参数来提供不同的截取方式 
+1.1只传一个参数, 将字符串从索引号为2开始截取，一直到字符串末尾。（索引值从0开始）；  
+
+```java
+String sb = "bbbdsajjds";
+sb.substring(2);
+//结果：bdsajjds
+```
+
+
+
+ 1.2传入2个索引值, 从索引号2开始到索引好4结束（并且不包含索引4截取在内，也就是说实际截取的是2和3号字符）；  
+
+```java
+String sb = "bbbdsajjds";
+sb.substring(2, 4);
+//结果：bd
+```
+
+
+

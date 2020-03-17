@@ -4,6 +4,8 @@
 
 ### 12.1.1.index.jsp
 
+![1583574302263](D:\MyNote\images\1583574302263.png)
+
 ```jsp
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -13,7 +15,7 @@
 <body>
     <h3>入门程序
     </h3>
-    <a href="hello">入门程序</a>
+    <a href="/hello">入门程序</a>
 </body>
 </html>
 ```
@@ -115,7 +117,7 @@ public class HelloController {
 
 
 
-开启服务器，首先加载web.xml,然后回根据servlet标签加载其中的前端控制器DispatcherServlet，同时根据init-param标签会将springmvc.xml进行初始化，根据load-on-startup标签会将配置文件只加载一次。而springmvc.xml会根据context:component-scan这个标签去扫描com.itheima.controller下的所有拥有@Controller标签的的类，并将这些类加入ioc容器。当浏览器访问index,.jsp时，点击链接，前端控制器DispatcherServlet会找到注解@RequestMapping且path="/hello"的方法，这个方法会处理来自页面的请求，并最终返回一个结果，然后前端控制器DispatcherServlet会找到视图解析器internalResourceViewResolver解析结果，将结果success根据内部标签内容/WEB-INF/pages/找到这个路径下，名字是success，结尾是.jsp的页面。
+开启服务器，首先加载web.xml,然后回根据servlet标签加载其中的前端控制器DispatcherServlet，同时根据init-param标签会将springmvc.xml进行初始化，根据load-on-startup标签会将配置文件只加载一次。而springmvc.xml会根据context:component-scan这个标签去扫描com.itheima.controller下的所有需要加入ioc容器的类，并将这些类加入ioc容器。当浏览器访问index,.jsp时，点击链接，前端控制器DispatcherServlet会在容器先找到@Controller标注的类，然后找到标注了注解@RequestMapping(path="/hello")的方法，这个方法会处理来自页面的请求，并最终返回一个结果，然后前端控制器DispatcherServlet会找到视图解析器internalResourceViewResolver解析结果，将结果success根据内部标签内容/WEB-INF/pages/找到这个路径下，名字是success，结尾是.jsp的页面。
 
 ## 12.2.注解
 
@@ -671,7 +673,7 @@ public class UserController {
         //response.sendRedirect(request.getContextPath()+"/index.jsp");
         //response.setCharacterEncoding("UTF-8");//重定向到页面
         response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().print("<h3>张三</h3>");//直接系那个页面输出内容
+        response.getWriter().print("<h3>张三</h3>");//直接给那个页面输出内容
         return;
     }
     @RequestMapping("/testForward")//根据关键字返回页面
@@ -717,7 +719,7 @@ jsp:
 
 
 
-由于前端控制器会拦截所有访问请求，所以也会拦截对jquery文件的访问，阻止前端控制器对静态资源访问的拦截方法就是在springmvc.xml中配置mvc:resourses这个标签。jquery文件所在文件爱你家要放在wepapp文件夹下面：
+由于前端控制器会拦截所有访问请求，所以也会拦截对jquery文件的访问，阻止前端控制器对静态资源访问的拦截方法就是在springmvc.xml中配置mvc:resourses这个标签。jquery文件所有文件要放在wepapp文件夹下面：
 
 ```xml
  <!--设置前端控制器不拦截静态资源并指定哪些不拦截-->

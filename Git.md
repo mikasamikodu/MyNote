@@ -425,3 +425,75 @@ commit message指的是修改的日志，最后点击右下角的commit,即可�
 ![1552372253798](D:\MyNote\images\1552372253798.png)
 
 点击即可。
+
+# 6.补充
+
+## 前言
+
+Git分布式版本管理系统。
+
+## 1.git 使用前提
+
+
+
+```bash
+从git clone 下来对应的项目
+执行命令请进入对应的项目的路径进行执行
+请学会查看日志输出，每次命令执行后都会有相应的log输出
+```
+
+## 2. git 常用命令
+
+
+
+```csharp
+git clone http||ssh 克隆一份代码到本地仓库 
+git status 查看当前分支有哪些修改 
+git diff //查看当前没有add的内容
+git diff --cache //查看已经add但是没有commit的内容
+git add . 将本地所有新增文件提交到本地缓存区 
+git add [filepath] 将本地某个新增文件提交到本地缓存区
+git commit -m 'log' –a 把stage中所有的修改提交到本地库 
+git push //把本地库的修改提交到远程库中
+git pull把远程库的代码更新到工作台
+git pull --rebase origin master 强制把远程库的代码跟新到当前分支上面
+git fetch //把远程库的代码更新到本地库
+git branch -r/-a //查看远程分支/全部分支
+git checkout master/branch //切换到某个分支
+git blame someFile //查看某个文件的每一行的修改记录（）谁在什么时候修改的）
+git log //查看当前分支上面的日志信息
+git reset --hard HEAD //撤销本地修改
+git remote –v  查看远程仓库地址
+git branch 分支名 创建新的分支
+git revert 【filepath】将本地修改还原回 线上的版本
+```
+
+## 3.使用注意事项
+
+
+
+```csharp
+每次提交代码前使用 git status 查看本地修改状态
+新增的文件使用 git add [filePath] 或者 git add . 添加文件
+提交前 请使用 git pull 进行
+上述步骤可能会出现 merge 信息
+merge就是出现代码冲突或者文件冲突；出现这种情况需要根据代码进行合并删除多余的，代码中会出现标识 
+HADE>>>>>>   我的修改
+==========
+>>>>>>>> 1rtyfzx2rtyfzx33rtyfzx21wertyfzx 线上版本的改动 
+代码改动勤提交，同事间多沟通
+```
+
+## 4.  解决git pull/push每次都需要输入密码问题
+
+
+
+```php
+如果我们git clone的下载代码的时候是连接的"https://"而不是git@git (ssh)的形式，
+当我们操作git pull/push到远程的时候，总是提示我们输入账号和密码才能操作成功，频繁的输入账号和密码会很麻烦。
+解决办法：
+  git bash进入你的项目目录，输入：
+  git config --global credential.helper store
+  然后你会在你本地生成一个文本，上边记录你的账号和密码。当然这些你可以不用关心。
+  然后你使用上述的命令配置好之后，再
+```

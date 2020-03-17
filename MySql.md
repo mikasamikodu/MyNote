@@ -359,3 +359,126 @@ sql中的over函数和row_numbert()函数配合使用，可生成行号。可对
 over不能单独使用，要和分析函数：rank(),dense_rank(),row_number()等一起使用。 其参数：over（partition by columnname1 order by columnname2） 含义：按columname1指定的字段进行分组排序，或者说按字段columnname1的值进行分组排序。 例如：employees表中，有两个部门的记录：department_id ＝10和20
 
 select department_id，rank（） over（partition by department_id order by salary) from employees就是指在部门10中进行薪水的排名，在部门20中进行薪水排名。如果是partition by org_id，则是在整个公司内进行排名。
+
+
+
+# 9.mysql常见问题
+
+## 9.1.mysql初始化密码
+
+把文件解压到一个目录下
+
+![1581492550132](D:\MyNote\images\1581492550132.png)
+
+这是解压后的目录
+
+![1581492585153](D:\MyNote\images\1581492585153.png)
+
+将my.ini文件考进去
+
+![1581492618357](D:\MyNote\images\1581492618357.png)
+
+双击打开my.ini
+
+找到这两行更改成自己的解压路径保存
+
+![1581492662823](D:\MyNote\images\1581492662823.png)
+
+右键此电脑，选择属性
+
+![1581492953147](D:\MyNote\images\1581492953147.png)
+
+点击左侧菜单栏中高级系统设置，然后配置环境变量
+
+![1581493040054](D:\MyNote\images\1581493040054.png)
+
+![1581493095995](D:\MyNote\images\1581493095995.png)
+
+环境变量  新建 变量值是解压文件的路径
+
+![1581493127622](D:\MyNote\images\1581493127622.png)
+
+Path 单击path编辑
+
+![1581493230038](D:\MyNote\images\1581493230038.png)
+
+新建
+
+![1581493162904](D:\MyNote\images\1581493162904.png)
+
+之后 用管理员身份打开cmd进入文件路径
+
+![1581493316945](D:\MyNote\images\1581493316945.png)
+
+打开命令行窗口，在里面输入：mysqld --install
+
+这个命令是安装服务, 执行完后, 提示英文的成功, 这时候你可以在你的 windows 服务中看到 MySQL 的服务，移除服务命令为：mysqld remove
+
+接着输入：
+
+```mysql
+`mysqld ``--initialize --console`
+```
+
+
+
+执行这一步，是因为在MySQL5.7中没有data文件夹，需要用这几个命令产生data文件夹，并且初始化随机登陆密码/neiaAkuH4v!
+
+执行完会出现一大片英文，看不懂没关系，在最后面看到有一个 [email protected]: 后面有一连串的字母数字符号, 这是 MySQL 为你自动生成的随机密码. 要记下来, root就是登陆的用户名，一会我们登陆 MySQL 数据库的时候要用（或者直接按下enter进入）
+
+**启动mysql服务**
+
+在安装后只有启动了mysql服务才能用，
+
+命令行输入：
+
+```
+`net start mysql`
+```
+
+
+
+ ![1581493444730](D:\MyNote\images\1581493444730.png)
+
+**修改默认密码**
+
+之前系统随机生成的密码只能用来登陆，然后修改密码，用不了mysql，只有修改了才能用
+
+启动了mysql服务后
+
+然后执行 `mysql -uroot -p` ，输入上面得到的密码进入，用该密码登录后，必须马上修改新的密码，不然会报如下错误：
+
+mysql> use mysql;
+ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.
+如果你想要设置一个简单的测试密码的话，比如设置为123456，会提示这个错误，报错的意思就是你的密码不符合要求
+
+mysql> alter user 'root'@'localhost' identified by '123456';
+ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
+这个其实与validate_password_policy的值有关。
+
+validate_password_policy有以下取值：
+
+默认是1，即MEDIUM，所以刚开始设置的密码必须符合长度，且必须含有数字，小写或大写字母，特殊字符。
+有时候，只是为了自己测试，不想密码设置得那么复杂，譬如说，我只想设置root的密码为123456。
+必须修改两个全局参数：
+
+首先，修改validate_password_policy参数的值
+
+mysql> set global validate_password_policy=0;
+Query OK, 0 rows affected (0.00 sec)
+
+validate_password_length(密码长度)参数默认为8，我们修改为1
+
+mysql> set global validate_password_length=1;
+Query OK, 0 rows affected (0.00 sec)
+
+完成之后再次执行修改密码语句即可成功
+
+mysql> alter user 'root'@'localhost' identified by '123456';
+Query OK, 0 rows affected (0.00 sec)
+
+至此mysql已经全部安装配置完成了，可以直接用了，可以查看原有的那些数据库。
+
+停止服务的命令:exit
+
+之后再次登陆mysql直接输入修改后的密码就能进入了
