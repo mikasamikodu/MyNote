@@ -945,21 +945,280 @@ display 属性规定元素应该生成的框的类型。
 
 
 
-## 3.6. overflow
+## 3.5.背景
 
-> 定义
+### 3.5.1.background-image
 
-规定当内容溢出元素框时发生的事情。
+background-image：用于设置背景图片
+                -可同时设置背景图片与背景颜色，这样背景颜色就会成为背景图片的背景色
+                -如果背景图片小于元素，则图片会在元素内平铺至占满元素
+                -如果背景图片大于元素，则背景图片的一部分将不能显示
+                -果背景图片等于元素，则背景图片可正常显示
 
-> 可能的值
+### 3.5.2.background-repeat
 
-| 值      | 描述                                                     |
-| ------- | -------------------------------------------------------- |
-| visible | 默认值。内容不会被修剪，会呈现在元素框之外。             |
-| hidden  | 内容会被修剪，并且其余内容是不可见的。                   |
-| scroll  | 内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容。 |
-| auto    | 如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。 |
-| inherit | 规定应该从父元素继承 overflow 属性的值。                 |
+background-repeat：设置背景图片的平铺方式
+                   可选值：
+                     repeat：默认值，在横向和纵向上平铺
+                     no-repeat：不平铺，只显示一张图片
+                     repeat-x： 在横向上平铺
+                     repeat-y： 在纵向上平铺
+
+### 3.5.3.background-position
+
+background-position：指定背景图片的位置
+                通过指定偏移量指定图片位置：水平偏移量 垂直偏移量
+                设置方式：
+                    偏移量可通过top, bottom,left,right,center进行指定
+                    指定时必须指定两个值，如果只指定一个值，则第二个值默认是center
+                    偏移量除了通过方位名词指定也可通过数字指定
+
+### 3.5.4.background-clip
+
+background-clip：指定背景范围
+                    可选值：
+                        border-box：默认值，背景会出现在边框下边
+                        content-box：背景只会出现在内容区
+                        padding-box：背景会出现在内容区和内边距
+
+### 3.5.5.background-origin
+
+background-origin： 指定背景图片偏移量计算的原点
+                    可选值：
+                        padding-box：默认值，背景图片偏移量从内边距开始计算
+                        content-box：背景图片偏移量从内容区开始计算
+                        border-box：背景图片偏移量从边框开始计算
+
+### 3.5.6.background-size
+
+background-size：指定背景图片大小
+                第一个值表示高度，第二个值表示宽度
+                如果只指定一个，则另一个为auto
+                可选值：
+                    contain：图片比例不变，将图片在元素中完整显示
+                    cover：  图片比例不变，，将元素铺满
+
+### 3.5.7.background-attachment
+
+background-attachment：图片依附元素的方式
+                    可选值：
+                        scroll：默认值，随元素滚动
+                        fixed：固定在元素某一处，不随元素滚动
+
+### 3.5.8.background
+
+background：背景的简写属性，所有与背景相关的属性都可以在这里指定
+
+```css
+background: red url('./images/1.jpg') center center/contain border-box contain-box no-repeat
+background-color background-image background-position/background-size background-origin background-clip background-repeat
+```
+
+
+
+上述样式无顺序要求，没有规定哪个属性是必须的
+        规定；1.background-size必须在background-position后面，以/隔开
+             2.background-origin background-clip必须一起出现且顺序不能变	
+
+上述各属性的案例
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box{
+            width: 500px;
+            height: 500px;
+            background-color: deepskyblue;
+            /*background-image：用于设置背景图片
+                -可同时设置背景图片与背景颜色，这样背景颜色就会成为背景图片的背景色
+                -如果背景图片小于元素，则图片会在元素内平铺至占满元素
+                -如果背景图片大于元素，则背景图片的一部分将不能显示
+                -果背景图片等于元素，则背景图片可正常显示
+            */
+            background-image: url("./images/1.jpg");
+            /*
+                background-repeat：设置背景图片的平铺方式
+                   可选值：
+                     repeat：默认值，在横向和纵向上平铺
+                     no-repeat：不平铺，只显示一张图片
+                     repeat-x： 在横向上平铺
+                     repeat-y： 在纵向上平铺
+            */
+            background-repeat: no-repeat;
+            /*background-position：指定背景图片的位置
+                通过指定偏移量指定图片位置：水平偏移量 垂直偏移量
+                设置方式：
+                    偏移量可通过top, bottom,left,right,center进行指定
+                    指定时必须指定两个值，如果只指定一个值，则第二个值默认是center
+                    偏移量除了通过方位名词指定也可通过数字指定
+            */
+            /*background-position: left center;*/
+            /*
+                background-clip：指定背景范围
+                    可选值：
+                        border-box：默认值，背景会出现在边框下边
+                        content-box：背景只会出现在内容区
+                        padding-box：背景会出现在内容区和内边距
+            */
+            background-clip: border-box;
+            border: 10px red double;
+            padding: 5px;
+            /*
+                background-origin： 指定背景图片偏移量计算的原点
+                    可选值：
+                        padding-box：默认值，背景图片偏移量从内边距开始计算
+                        content-box：背景图片偏移量从内容区开始计算
+                        border-box：背景图片偏移量从边框开始计算
+            */
+            background-origin: padding-box;
+            /*background-size：指定背景图片大小
+                第一个值表示高度，第二个值表示宽度
+                如果只指定一个，则另一个为auto
+                可选值：
+                    contain：图片比例不变，将图片在元素中完整显示
+                    cover：  图片比例不变，，将元素铺满
+
+            */
+            background-size: contain;
+            overflow: scroll;
+        }
+        .box1{
+            width: 300px;
+            height: 1000px;
+            background-image: url("./images/300.jpg");
+            background-size: 300px;
+            background-origin: padding-box;
+            background-repeat: no-repeat;
+            margin: 10px;
+            /*
+                background-attachment：图片依附元素的方式
+                    可选值：
+                        scroll：默认值，随元素滚动
+                        fixed：固定在元素某一处，不随元素滚动
+            */
+            background-attachment: fixed;
+        /*
+          background：背景的简写属性，所有与背景相关的属性都可以在这里指定
+
+          background: red url('./images/1.jpg') center center/contain border-box contain-box no-repeat
+        background-color background-image background-position/background-size background-origin background-clip background-repeat
+        上述样式无顺序要求，没有规定哪个属性是必须的
+            规定；1.background-size必须在background-position后面，以/隔开
+                 2.background-origin background-clip必须一起出现且顺序不能变
+          */
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="box1"></div>
+</div>
+</body>
+</html>
+```
+
+
+
+### 3.5.9.雪碧图
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        a{
+            width: 93px;
+            height: 29px;
+            display: block;
+        }
+        a:link{
+            background-image: url("./images/link.png");
+        }
+        a:hover{
+            background-image: url("./images/hover.png");
+        }
+        a:active{
+            background-image: url("./images/active.png");
+        }
+        /*
+               图片属于网页中的外部资源，外部资源都需要浏览器单独发送请求加载，
+                   浏览器加载外部资源时是按需加载的，用则加载，不用则不加载
+                   像我们上边的练习link会首先加载，而hover和active会在指定状态触发时才会加载
+
+             */
+    </style>
+</head>
+<body>
+<a href="javascript:;"></a>
+</body>
+</html>
+```
+
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        a:link{
+            width: 93px;
+            height: 29px;
+            display: block;
+            background-image: url("./images/btn.png");
+            background-position: 0 0;
+        }
+        a:hover{
+            background-position: -93px 0;
+        }
+        a:active{
+            background-position: -186px 0;
+        }
+        .box{
+            width: 130px;
+            height: 50px;
+            background-image: url("./images/amazon-sprite_.png");
+            background-position: 0 0;
+        }
+        /*
+        解决图片闪烁的问题：
+            可以将多个小图片统一保存到一个大图片中，然后通过调整background-position来显示的图片
+            这样图片会同时加载到网页中 就可以有效的避免出现闪烁的问题
+            这个技术在网页中应用十分广泛，被称为CSS-Sprite，这种图我们称为雪碧图
+        雪碧图的使用步骤：
+            1.先确定要使用的图标
+            2.测量图标的大小
+            3.根据测量结果创建一个元素
+            4.将雪碧图设置为元素的背景图片
+            5.设置一个偏移量以显示正确的图片
+        雪碧图的特点：
+            一次性将多个图片加载进页面，降低请求的次数，加快访问速度，提升用户的体验
+ */
+        .box1{
+            width: 45px;
+            height: 30px;
+            background-image: url("./images/amazon-sprite_.png");
+            background-position: -57px -338px;
+        }
+    </style>
+</head>
+<body>
+<a href="javascript:;"></a>
+<div class="box"></div>
+<div class="box1"></div>
+</body>
+</html>
+```
+
+
 
 ## 3.7.浮动
 
