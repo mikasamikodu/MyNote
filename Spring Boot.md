@@ -1623,7 +1623,7 @@ public class ThymeleafProperties {
 
 
 
-2）、表达式？
+2）、表达式
 
 ```properties
 Simple expressions:（表达式语法）

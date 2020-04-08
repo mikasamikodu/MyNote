@@ -945,6 +945,96 @@ display 属性规定元素应该生成的框的类型。
 
 
 
+### 3.4.6.字体阴影
+
+**CSS3 text-shadow 属性**
+
+**实例**
+
+基础的文本阴影效果：
+
+```css
+h1{
+	text-shadow: 5px 5px 5px #FF0000;
+}
+```
+
+
+
+**语法**
+
+```css
+text-shadow: h-shadow v-shadow blur color;
+```
+
+
+
+ **注释：**text-shadow 属性向文本添加一个或多个阴影。该属性是逗号分隔的阴影列表，每个阴影有两个或三个长度值和一个可选的颜色值进行规定。省略的长度是 0。 
+
+| 值         | 描述                             |
+| :--------- | :------------------------------- |
+| *h-shadow* | 必需。水平阴影的位置。允许负值。 |
+| *v-shadow* | 必需。垂直阴影的位置。允许负值。 |
+| *blur*     | 可选。模糊的距离。               |
+| *color*    | 可选。阴影的颜色。               |
+
+
+
+###  3.4.7.white-space
+
+ 规定段落中的文本不进行换行： 
+
+```css
+p
+  {
+  white-space: nowrap
+  }
+```
+
+
+
+**定义和用法**
+
+white-space 属性设置如何处理元素内的空白。
+
+这个属性声明建立布局过程中如何处理元素中的空白符。值 pre-wrap 和 pre-line 是 CSS 2.1 中新增的。
+
+**可能的值**
+
+| 值       | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| normal   | 默认。空白会被浏览器忽略。                                   |
+| pre      | 空白会被浏览器保留。其行为方式类似 HTML 中的 <pre> 标签。    |
+| nowrap   | 文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止。 |
+| pre-wrap | 保留空白符序列，但是正常地进行换行。                         |
+| pre-line | 合并空白符序列，但是保留换行符。                             |
+| inherit  | 规定应该从父元素继承 white-space 属性的值。                  |
+
+
+
+### 3.4.8.text-wrap
+
+ 不允许换行： 
+
+```css
+p.test {text-wrap:none;}
+```
+
+
+
+**定义和用法**
+
+text-wrap 属性规定文本的换行（折行）规则。
+
+| 值           | 描述                                                         |
+| :----------- | :----------------------------------------------------------- |
+| normal       | 只在允许的换行点进行换行。                                   |
+| none         | 不换行。元素无法容纳的文本会溢出。                           |
+| unrestricted | 在任意两个字符间换行。                                       |
+| suppress     | 压缩元素中的换行。浏览器只在行中没有其他有效换行点时进行换行。 |
+
+
+
 ## 3.5.背景
 
 ### 3.5.1.background-image
@@ -1215,6 +1305,424 @@ background-color background-image background-position/background-size background
 <div class="box"></div>
 <div class="box1"></div>
 </body>
+</html>
+```
+
+
+
+### 3.5.10.线性渐变
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box{
+            width: 200px;
+            height: 200px;
+            /*
+                线性渐变可以设置一些复杂的背景颜色，可以实现从一个颜色向其他颜色过渡的效果
+                渐变是图片，需要通过background-image设置
+                线性渐变，颜色通过一条直线变化linear-gradient()
+                linear-gradient(red, yellow)：红色在开头，黄色在结尾，中间是过渡
+                指定线性渐变的方向：
+                   to top/to left/to right/to bottom案例: linear-gradient(to top, red, yellow);
+                   to  top left/to top right/to bottom left/to bottom right....案例: linear-gradient(to top left, red, yellow);
+                   deg：表示度数，案例：linear-gradient(45deg, red, yellow)
+                   turn：表示一圈，案例：linear-gradient(0.3turn, red, yellow)
+
+                   渐变可以同时指定多个颜色。多个颜色默认是平均分布的
+                   可以手动调整颜色分布情况：
+            */
+            /*background-image: linear-gradient(0.2turn, red, yellow, blue);*/
+            /*从上向下，80像素以上为纯红色，120像素以下为纯黄色，中间部分为过渡*/
+            /*background-image: linear-gradient(red 80px, yellow 120px);*/
+            /*repeating-linear-gradient：可以平铺的线性渐变，由于80像素到120像素中间的40像素为过渡区域，因此这40像素会从上到下重复5次*/
+            background-image: repeating-linear-gradient(red 80px, yellow 120px);
+        }
+    </style>
+</head>
+<body>
+<div class="box"></div>
+</body>
+</html>
+```
+
+
+
+### 3.5.11.径向渐变
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box{
+            width: 300px;
+            height: 300px;
+            /*
+                radial-gradient()：径向渐变，产生放射性效果，如太阳般
+                默认情况下径向渐变的形状会根据元素的形状来计算
+                    正方形-圆形
+                    长方形-椭圆形
+                    案例：
+                    以元素中心为径向渐变原点，半径100的圆，从内向外由红边黄，非渐变部分为黄色
+                    background-image: radial-gradient(100px 100px, red, yellow);
+                    以元素中心为径向渐变原点，半径100的圆，从内向外由红边黄，非渐变部分为黄色
+                    background-image: radial-gradient(100px, red, yellow);
+                    以元素中心为径向渐变原点，椭圆，从内向外由红边黄，非渐变部分为黄色
+                    background-image: radial-gradient(100px 200px, red, yellow);
+                -可手动指定径向渐变的形状
+                    circle-圆形
+                    ellipse-椭圆形
+                    案例：background-image: radial-gradient(ellipse, red, yellow);
+
+                以元素中心为径向渐变原点，半径100的圆从内向外由红边黄，并将中心渐变部分从内向外重复，每半径100px重复一次
+                repeating-radial-gradient(100px 100px, red, yellow);
+
+                手动指定径向渐变原点
+                设置径向渐变原点为元素左上角(0,0)位置，并作出半径为100px的径向渐变圆
+                background-image: radial-gradient(100px 100px at 0 0, red, yellow);
+                设置径向渐变原点为元素中心位置，并作出半径为100px的径向渐变圆
+                background-image: radial-gradient(100px 100px at center center, red, yellow);
+                设置径向渐变原点为元素中心位置，并作出径向渐变圆
+                background-image: radial-gradient(at center center, red, yellow);
+
+                最终语法：
+                    radial-gradient(大小 at 位置,颜色 位置,颜色 位置,颜色 位置);颜色可写多个
+                    大小可选值：
+                        circle-圆形
+                        ellipse-椭圆形
+                        像素
+                        closest-side  近边
+                        closest-corner  近角
+                        farthest-side   远边
+                        farthest-corner  远角
+                   位置：
+                    top bottom left right center 像素
+            		大小和位置都是可选的，可以都不写或写其一
+            */
+            background-image: radial-gradient(at center center, red, yellow);
+        }
+    </style>
+</head>
+<body>
+<div class="box"></div>
+</body>
+</html>
+```
+
+
+
+## 3.6.弹性盒子
+
+### 3.6.1.flex简介
+
+### 3.6.2.flex-direction
+
+### 3.6.3.flex-grow
+
+### 3.6.4.flex-shrink
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>弹性盒子</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        /* 
+            flex（弹性盒，伸缩盒）
+                --是css中一种布局手段，主要是代替浮动来完成页面的布局
+                --flex可以是元素具有弹性，让元素跟随页面大小改变而改变
+                --弹性容器
+                    --要使用容器就必须先将一个元素设置为弹性容器
+                    --可以通过display设置弹性容器
+                        display: flex;      设置为块级弹性容器
+                        display: inline-flex; 设置为行内弹性容器
+                --弹性元素
+                    --弹性容器的子元素就是弹性元素
+                    --弹性元素可同时设置为弹性容器
+        */
+        
+        ul {
+            /* width: 900px; */
+            width: 200px;
+            border: 2px solid red;
+            margin: 100px auto;
+            /* 将元素设置为弹性容器 */
+            display: flex;
+            /* 
+                flex-direction；设置弹性容器中元素的排列方式
+                    可选值：
+                        row: 默认值，弹性元素在容器中水平排列（自左向右）
+                        row-reverse：弹性元素在容器中水平排列（自右向左）
+                        column：弹性元素在容器中垂直排列（自上向下）
+                        column-reverse：弹性元素在容器中垂直排列（自下向上）
+                
+                主轴：弹性元素的排列方向
+                侧轴：与主轴垂直的方向就是了
+            */
+            flex-direction: row;
+        }
+        
+        li {
+            width: 100px;
+            line-height: 100px;
+            background-color: aqua;
+            text-align: center;
+            font-size: 40px;
+            /* 
+                弹性元素的属性：
+                    flex-grow：指定弹性元素伸展的系数
+                        -当父元素还有剩余空间时，子元素如何伸展
+                        -父元素的剩余空间，会按照比例分配
+                        -默认值是0
+                    flex-shrink：指定弹性元素的收缩系数
+                        当父元素空间不足以容纳所有子元素时，如何对其子元素处理呢
+            */
+            /* flex-grow: 1;当弹性元素有三个，剩余空间为300px时，每个元素宽度增加100px*/
+            flex-shrink: 1;
+             /* flex-grow: 0;
+            flex-shrink: 0; */
+         /* 
+                flex-basis:指定元素在主轴上的基础长度
+                    如果主轴是横向的，则指定的是弹性元素的宽度
+                    如果主轴是竖向的，则指定的是弹性元素的高度
+                    默认值为auto,表示参考元素自身的宽高
+                    如果传递了一个具体参数，则以该值为准
+            */
+            /* flex-basis: auto; */
+            /* 
+                flex：可以设置弹性元素上的三个样式
+                    顺序：增长 缩减 基础长度
+                    可选值：
+                        initial->flex: 0 1 auto;
+                        auto->flex: 1 1 auto;
+                        none->auto->flex: 0 0 auto;弹性元素无弹性
+            */
+            flex: initial;
+            /* order:可以指定弹性元素的排列顺序 */
+            order: 3
+        }
+        
+        li:nth-child(2) {
+            background-color: rgb(21, 144, 192);
+            order: 1;
+        }
+        
+        li:nth-child(3) {
+            background-color: rgb(150, 36, 202);
+            order: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+</body>
+
+</html>
+```
+
+
+
+### 3.6.5.flex-wrap
+
+### 3.6.6.justify-content
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>弹性盒子</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        ul {
+            /* width: 200px; */
+            width: 900px;
+            border: 2px solid red;
+            margin: 100px auto;
+            display: flex;
+            /* 
+                flex-wrap:设置弹性元素在容器内是否可以自动换行
+                    可选值：
+                        nowrap： 默认值，不自动换行
+                        wrap: 自动换行
+                        wrap-reverse: 自动换行，但是是自下向上换行
+            */
+            /* flex-wrap: wrap-reverse; */
+            /* 
+                justify-content：设置如何分配主轴上的空白空间
+                    可选值：
+                        flex-start: 默认值，弹性元素沿主轴起边排列
+                        flex-end: 弹性元素沿主轴终边排列
+                        center：弹性元素居中排列
+                        space-around：弹性容器的空白空间均匀分布在弹性元素的两侧
+                        space-evenly: 弹性容器的空白空间均匀分布在弹性元素的一侧
+                        space-between：弹性容器的空白空间均匀分布在弹性元素之间
+            */
+            justify-content: space-between
+        }
+        
+        li {
+            width: 100px;
+            line-height: 100px;
+            background-color: aqua;
+            text-align: center;
+            font-size: 40px;
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+        
+        li:nth-child(2) {
+            background-color: rgb(21, 144, 192);
+        }
+        
+        li:nth-child(3) {
+            background-color: rgb(150, 36, 202);
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+</body>
+
+</html>
+```
+
+
+
+### 3.6.7.align-items
+
+### 3.6.8.align-content
+
+### 3.6.9.align-self
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>弹性盒子</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        ul {
+            width: 600px;
+            height: 500px;
+            border: 2px solid red;
+            margin: 50px auto;
+            display: flex;
+            flex-wrap: wrap;
+            /* 
+                align-items: 规定元素如何在辅轴上排列
+                    可选值：
+                        stretch:默认值，将元素的长度设置为相同的
+                        flex-start：元素不会延长，在辅轴起边对齐
+                        flex-end: 元素不会延长，在辅轴起边对齐;
+                        center: 居中对齐
+                        baseline：基线对齐
+            */
+            align-items: baseline;
+            /* 
+                align-content：设置如何分配辅轴上的空白空间
+                    可选值：
+                        flex-start: 默认值，弹性元素沿辅轴起边排列
+                        flex-end: 弹性元素沿辅轴终边排列
+                        center：弹性元素居中排列
+                        space-around：弹性容器的空白空间均匀分布在弹性元素的两侧
+                        space-evenly: 弹性容器的空白空间均匀分布在弹性元素的一侧
+                        space-between：弹性容器的空白空间均匀分布在弹性元素之间
+            */
+            align-content: center;
+        }
+        
+        li {
+            width: 200px;
+            line-height: 100px;
+            background-color: aqua;
+            text-align: center;
+            font-size: 40px;
+            flex-shrink: 0;
+            flex-grow: 0;
+        }
+        
+        li:nth-child(2) {
+            background-color: rgb(21, 144, 192);
+            /* 与align-items对应，是用于弹性元素的样式，可覆盖其对应弹性容器自己的align-items的设置 */
+            align-self: center;
+        }
+        
+        li:nth-child(3) {
+            background-color: rgb(150, 36, 202);
+        }
+        
+        li:nth-child(4) {
+            background-color: orange;
+        }
+        
+        li:nth-child(5) {
+            background-color: chocolate;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>
+            <div>1</div>
+        </li>
+        <li>
+            <div>2</div>
+            <div>2</div>
+        </li>
+        <li>
+            <div>3</div>
+            <div>3</div>
+            <div>3</div>
+        </li>
+        <li>
+            <div>1</div>
+        </li>
+        <li>
+            <div>2</div>
+            <div>2</div>
+        </li>
+    </ul>
+</body>
+
 </html>
 ```
 
@@ -1645,39 +2153,38 @@ align-items 属性定义flex子项在flex容器的当前行的侧轴（纵轴）
 ​						子元素也是他的后代元素    
 ​	兄弟元素：拥有相同的父元素d的元素叫兄弟元素    
 
-### 3.10.8.子元素选择器：        
+#### 3.10.7.1.子元素选择器：        
 
-​	作用：选择指定父元素的指定子元素 ，两者之间只差一层   
+​	作用：选择指定父元素的下一层中指定子元素 ，两者之间只差一层   
 ​	语法：选父元素>子元素{}        
 ​	案例：div>span{color:red;}    
 
-### 3.10.9.后代元素选择器：        
+#### 3.10.7.2.后代元素选择器：        
 
-​	作用：选择指定元素的指定后代元素 ，两者之间可差多层   
+​	作用：选择指定元素的所有指定后代元素 ，两者之间可差多层   
 ​	语法：祖先 后代{}        
 ​	案例：div span{color:red;}    
 
-### 3.10.10.后一个兄弟元素选择器：    
+#### 3.10.7.3.后一个兄弟元素选择器：    
 
 ​	作用：选择下一个兄弟元素，必须是挨着的兄弟,中间不能有其他元素    
 ​	语法：前一个 + 后一个{}    
 ​	案例：div + span{color:red;}
 
-### 3.10.11.后面所有兄弟元素选择器：    
+#### 3.10.7.4.后面所有兄弟元素选择器：    
 
 ​	作用：后面所有兄弟元素    
 ​	语法：前一个 ~ 后一个{}    
 ​	案例：div ~ span{color:red;}
 
-### 3.10.12.属性选择器：    
+### 3.10.8.属性选择器：    
 
 ​	[属性名]：选择含有指定属性的元素
-
 ​	[属性名=属性值]：选择含有指定属性和指定属性值的元素    
 ​	[属性名^=属性值]：选择含有指定属性且属性值以指定值开头的元素    
 ​	[属性名*=属性值]：选择含有指定属性且属性值含有指定值的元素伪类选择器：  
 
-### 3.10.13.伪类选择器  
+### 3.10.9.伪类选择器  
 
 伪类是用来描述一个元素的特殊状态，例如：被点击的元素，第一个元素，最后一个元素    
 伪类一般使用冒号开头        
@@ -1718,7 +2225,7 @@ ul>li:first-child会选中ul后的第一个元素且元素是li的，但是ul后
 :active：表示鼠标点击        
 :link和:visited是超链接独有的，:hover和:active是所有元素都可以使用的
 
-### 3.10.14.伪元素选择器：
+### 3.10.10.伪元素选择器：
 
 ​	表示页面  一些特殊的并不真实的存在的元素     
 ​	伪元素使用::开头     :
@@ -2580,6 +3087,790 @@ margin-left+border-left+padding-left+width+padding-right+border-right+margin-rig
 <div></div>
 </body>
 </html>
+```
+
+
+
+## 3.16.动画
+
+### 3.16.1.过渡效果
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .box1{
+            width: 700px;
+            height: 700px;
+            background-color: #999999;
+        }
+        .box1 div{
+            width: 100px;
+            height: 100px;
+            background-color: #b9cb41;
+            /*transition: all 2s;*/
+            margin-bottom: 100px;
+        /*    transition:过渡,
+                --通过过渡,可以指定一个属性发生变化的切换方式
+                --通过过渡可以创建一些非常好的效果,很好的提升用户体验
+        */
+            /*transition-property: 指定需要执行过渡效果的属性;
+                   多属性之间可以使用逗号隔开,如果所有属性都需要过渡效果,则可以使用all关键字,
+                   大部分属性都支持过渡效果
+            */
+            transition-property: all;
+            /*transition-property: height, width;*/
+            /*transition-duration: 指定执行过渡的持续时间;
+                指定的时间单位是秒(s)和毫秒(ms)
+                如果需要对不同属性执行不同过渡时间,可以在transition-property中将属性分开写,在transition-duration中按照位置写对应时间即可
+            */
+            transition-duration: 2s;
+            /*transition-duration: 1s, 2s;*/
+            /*transition-timing-function: 指定过渡的时序函数,即过渡的执行方式
+                    可选值:
+                        ease:默认值,慢速开始,先加速后减速停止,贝塞尔曲线对应cubic-bezier(.25, .1, .25, 1)
+                        linear:匀速运动,贝塞尔曲线对应cubic-bezier(0, 0, 0, 1)
+                        ease-in: 加速运动,慢速开始,加速然后停止
+                        ease-out: 减速运动,高速开始,减速然后停止
+                        ease-in-out:,慢速开始,先加速后减速停止,变化比ease剧烈
+                        cubic-bezier(x1, y1, x2, y2):贝塞尔曲线,参考网址:https://cubic-bezier.com
+                        steps(4):分步执行过渡效果,每过一秒执行一次效果,4次后效果执行完毕,
+                                 内部可以有两个参数,第一个指定执行步数,第二个指定在时间段开始前执行,还是之后执行
+                        steps(4, start):在时间段开始时就执行一次
+                        steps(4, end):在时间段结束时就执行一次,默认值
+
+            ;*/
+            /*transition-timing-function: ease;*/
+            /*transition-delay: ; 过渡效果的延迟时间,当触发过渡效果时,等待指定的延迟时间,再进行效果的过渡*/
+        }
+        .box2{
+            /*transition-timing-function: steps(4, start);*/
+            /*transition-delay: ; 过渡效果的延迟时间,当触发过渡效果时,等待指定的延迟时间,再进行效果的过渡*/
+            /*transition-delay: 1s;*/
+            /*transition可以将需要设置的东西一起设置,但是如果指定了两个时间的,后面的时间是延迟时间*/
+            transition: all 2s ease-in 1s;
+        }
+        .box3{
+            background-color: aqua;
+        }
+        .box1:hover div{
+            /*width: 200px;*/
+            /*height: 200px;*/
+            margin-left: 600px;
+        }
+    </style>
+</head>
+<body>
+<div class="box1">
+    <div class="box2"></div>
+    <div class="box3"></div>
+</div>
+</body>
+</html>
+```
+
+
+
+### 3.16.2.动画
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .box1{
+            width: 700px;
+            height: 700px;
+            background-color: #999999;
+        }
+        .box1 div{
+            width: 100px;
+            height: 100px;
+            background-color: #b9cb41;
+            margin-bottom: 100px;
+        }
+        .box2{
+            /*设置动画*/
+            /*animation-name:指定要对当前元素生效的名字*/
+            animation-name: test;
+            /*animation-duration:指定动画执行时间*/
+            animation-duration: 2s;
+            /*animation-delay:指定动画执行需要延迟的时间*/
+            animation-delay: 1s;
+            /*animation-timing-function:指定动画的时序函数*/
+            animation-timing-function: ease-in;
+            /*animation-iteration-count:指定动画的迭代器,或动画执行次数
+                可选值:
+                    数值: 执行的次数,默认是1
+                    infinite: 无限次
+            */
+            animation-iteration-count: 3;
+            /*animation-direction:指定动画的执行方向
+                 可选值:
+                    normal: 默认是从from向to方向运行,每次执行方向相同
+                    reverse:反着来,从to向from方向运行,每次执行方向相同
+                    alternate: 去时是从from向to方向运行,重复执行时会反方向运行,即从to向from方向运行
+                    alternate-reverse:去时是从to向from方向运行,重复执行时会反方向运行,即从from向to方向运行
+            */
+            animation-direction: alternate;
+            /*animation-play-state:指定动画的播放状态,
+                可选值:
+                    running: 默认值,动画执行
+                    paused: 动画暂停
+            */
+            /*animation-play-state: initial;*/
+            /*animation-fill-mode:动画的填充方式
+                可选值:
+                    none: 默认值,动画执行完毕元素回到原来位置
+                    forwards: 动画执行结束,元素停在动画结束位置
+                    backwards: 动画延时等待时,元素会处于开始位置,如果动画效果有颜色,则颜色会在等地延迟时就会有from的颜色变化,而不是保持元素原来颜色
+                    both: 结合了forwards与backwards的特性
+            */
+            animation-fill-mode: both;
+            /*  animation: 动画的简写方式,只对两个时间的位置有要求*/
+            /*animation: test 2s 2 1s alternate;*/
+        }
+        .box1:hover div{
+            /*margin-left: 600px;*/
+            animation-play-state: paused;
+        }
+
+        /*动画:
+            动画与过渡类似,都可以实现一些动态效果
+                不同的是过渡需要在某个属性发生变化时才会触发
+                动画可以自动触发
+            设置动画就必须先设置一个关键帧,关键帧设置了动画的每一个执行步骤
+        */
+        @keyframes test {
+            /*from表示动画开始的位置,也可以用0%表示*/
+            from{
+                margin-left: 0;
+                background-color: red;
+            }
+            /*to表示动画结束的位置,也可以用100%表示*/
+            to{
+                background-color: #b9cb41;
+                margin-left: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="box1">
+    <div class="box2"></div>
+</div>
+</body>
+</html>
+```
+
+
+
+### 3.16.3.变形-平移
+
+x轴与y轴的平移
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            background-color: #dedede;
+        }
+        .box1{
+            width: 200px;
+            height: 200px;
+            background-color: rgb(123, 216, 221);
+            margin: 0 auto;
+            transform: translateX(50%) ;
+        }
+        .box2{
+            width: 200px;
+            height: 200px;
+            background-color: rgb(23, 116, 121);
+            margin: 0 auto;
+        }
+    /*    变形:指通过css改变元素的形状或位置
+            -变形不会影响到元素的布局
+            -transform用于设置元素的变形效果
+                 -平移:
+                    translateX(): 沿着x轴方向平移,元素移动时,原来的位置还占着,移动后的位置不会脱离文档流,但也不会挤压其他元素,但会覆盖其他元素
+                    translateY(): 沿着y轴方向平移
+                    translateZ(): 沿着z轴方向平移
+                       平移元素时所使用的百分比是相对于自身大小的
+    */
+        .box3{
+            background-color: #b9cb41;
+            position: absolute;
+            /*top: 0;这种方式只适用于元素宽高确定的情况
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;*/
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        /*    这种方式适用于不确定元素宽高确定的情况*/
+        }
+        .box4,.box5{
+            width: 220px;
+            height: 300px;
+            background-color: #FFF;
+            float: left;
+            margin: 0 10px;
+            transition: all .3s;
+        }
+        .box4:hover, .box5:hover{
+            transform: translateY(-5px);
+            box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+        }
+    </style>
+</head>
+<body>
+<div class="box1"></div>
+<div class="box2"></div>
+<div class="box3">1111111111111111</div>
+<div class="box4"></div>
+<div class="box5"></div>
+</body>
+</html>
+```
+
+
+
+z轴的平移
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html{
+            /*设置当前网页的视距为800像素人眼距离网页的距离*/
+            perspective: 800px;
+        }
+        body{
+            border: 1px solid red;
+        }
+        .box1{
+            width: 100px;
+            height: 100px;
+            background-color: #b9cb41;
+            margin: 100px auto;
+            transition: .3s;
+        }
+        body:hover .box1{
+            /*
+                z轴平移,调整元素在z轴方向的位置,正常情况下就是调整元素与人眼之间的距离
+                    距离越大,元素离人越近
+                z轴平移属于立体效果(近大远小),默认情况下网页是不支持透视的,如果需要看到效果就必须设置网页的视距
+            */
+            transform: translateZ(600px);
+        }
+    </style>
+</head>
+<body>
+<div class="box1"></div>
+</body>
+</html>
+```
+
+
+
+### 3.16.4.变形-旋转
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html{
+            /*设置当前网页的视距为800像素人眼距离网页的距离*/
+            perspective: 800px;
+        }
+        body{
+            border: 1px solid red;
+        }
+        .box1{
+            width: 100px;
+            height: 100px;
+            background-color: #b9cb41;
+            margin: 100px auto;
+            transition: .3s;
+            /*animation: test 1s ease-in-out infinite;*/
+        }
+        /*@keyframes test {
+            from{
+                transform: rotateY(180deg)  translateZ(400px)
+            }
+            to{
+                transform: rotateY(90deg)  translateZ(0px)
+            }
+        }*/
+        body:hover .box1{
+            /*
+                通过旋转可以使元素沿着x,y,z轴旋转指定的角度
+                    rotateX()
+                    rotateY()
+                    rotateZ()
+                        旋转的角度可以是720deg(720度,即2圈),1turn(一圈).200grad(相当于180度,半圈)
+            */
+            transform:  rotateY(180deg)  translateZ(400px);
+            /*transform: translateX(100px) rotateY(180deg)  ;*/
+            /*backface-visibility:设置元素背面是否可见*/
+            backface-visibility: visible;
+        }
+    </style>
+</head>
+<body>
+<div class="box1"></div>
+</body>
+</html>
+```
+
+
+
+### 3.16.5.缩放
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box1{
+            width: 100px;
+            height: 100px;
+            background-color: greenyellow;
+            margin: 100px auto;
+            transition: transform .5s;
+            /*设置变形的原点*/
+            transform-origin: 0 0 ;
+        }
+        .box1:hover{
+            /*
+                对元素进行缩放的函数
+                    scaleX(): 水平方向的缩放
+                    scaleY(): 垂直方向的缩放
+                    scale(): 水平垂直两个方向的缩放
+            */
+            transform: scale(.2);
+        }
+    </style>
+</head>
+<body>
+<div class="box1"></div>
+</body>
+</html>
+```
+
+
+
+### 3.17.less
+
+```less
+//这个是less中的注释，不会被解析到css中
+// 通过@import可以将其他less文件引入到这里面
+@import"sysnx.less"
+/*
+    这个是css的注释，会被解析到css中
+*/
+body{
+    background-color: silver;
+    div{
+        width: 100px;
+        height: 100px;
+        background-color: rgb(117, 189, 199);
+    }
+}
+// 变量，可以在变量中存储一个任意的数值
+// 并且我们可以在需要时任意修改变量中的值
+// 变量的语法：@变量名
+@a:100px;
+@b:red;
+@c:box4;
+.box3{
+    width: @a;
+}
+.@{c}{
+    width: @a;
+    height: $width;
+    background-color: @b;
+}
+
+.box1{
+    .box2{
+        color: red;
+    }
+    >.box3{
+        color: red;
+    }
+    +.box4{
+        color: red;
+    }
+    // &代表外层的父元素
+    &:hover div{
+        color: red;
+    }
+    div &:hover.box2{
+        color: red;
+    }
+}
+.p1{
+    width: 100px;
+    height: 100px;
+}
+// :extend()为当前选择器扩展指定的选择器的样式(选择器分组)
+.p2:extend(.p1){
+    color: red;
+}
+.p3{
+    // 直接对直送的样式进行引用，这里就相当于将p1的样式在这里进行了复制
+    // mixin：混合，将p2中独有的样式复制过来
+    .p2();
+}
+// 使用类选择器可以在选择器后面添加一对括号，这时我们就创建了一个mixin
+.p4(){//这个是一个混合函数，不会出现在css中，而是供其他选择器引用
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+.p5{
+    .p4();
+}
+// 混合函数，在混合函数中是可以传参的,可以设置默认值(@s:200px)
+.test2(@s){
+    width: @s;
+}
+.test{
+    // 调用混合函数时就必须按照顺序填写参数，也可以按照变量名:值(@s:200px)的方式传参
+    .test2(200px);
+}
+// 在less中所有的数值都可以直接运算,包含加减乘除
+.bo{
+    width: 100px + 120px;
+}
+```
+
+
+
+## 3.17.像素
+
+### 3.17.1.像素
+
+像素：
+
+​      -屏幕是由一个个发光的点组成的，这些点就是像素；
+
+​      -分辨率，：1920*1080就是指屏幕中的小点数量
+
+​      -在前端开发中像素分为物理像素和css像素
+
+​      -物理像素就是上述的小点
+
+​      -css像素就是编写html时用到的像素
+
+​        -浏览器在在显示网页时，需要先将css像素转化为物理像素再显示
+
+​        -css像素最终由几个屋里像素组成，需要由浏览器决定
+
+​        -默认情况下，在pc端，一个css像素-一个物理像素
+
+​      
+
+​      视口（viewport）：
+
+​        -视口就是屏幕中显示网页的区域
+
+​        -可以通过查看视口大小判断css像素与物理像素的比值
+
+​        -默认情况下
+
+​          视口宽度
+
+​            css像素 1920
+
+​            物理像素 1920
+
+​            此时两者比例是1：1
+
+​        -放大两倍的情况下
+
+​          视口宽度
+
+​            css像素  960
+
+​            物理像素 1920
+
+​             此时两者比例是1：2
+
+​        -因此我们可以通过改变视口大小改变两者的像素比
+
+### 3.17.2.手机像素
+
+手机像素：
+
+​      -在不同屏幕上，单位像素是不一样的，像素越小屏幕越清晰
+
+​      笔记本屏幕  24寸  1920*1080
+
+​      iphone6屏幕 4.7寸 750*1334
+
+​      智能手机的像素点远小于计算机的像素点
+
+​      问题：一个宽度是980的网页如何在苹果6中显示呢？
+
+​      默认情况下，移动端网页都会将视口设定为980像素
+
+​        以确保网页可以在移动端可以正常显示，但是如果网页宽度超过980时
+
+​        移动端会自动将网页进行缩放以确保可以完整显示网页
+
+
+
+​      所以大部分pc端网站都可以在移动端正常浏览，但是体验一般不会好
+
+​        为解决这个问题，dd啊部分网站  都会专门为移动端设计一个网页
+
+### 3.17.3.完美视口
+
+移动端默认视口是980px(css像素)
+
+​        默认情况下，移动端的像素比就是 980/移动端宽度（980/750）
+
+​        如果我们在网页中编写移动端代码，这样在980的视口下，像素是非常不好的
+
+​          会导致网页内容非常小
+
+​        所以编写移动端网页时必须确保有一个比较合理的像素比
+
+​          1css像素对应2个物理像素
+
+​          1css像素对应3个物理像素
+
+​        可以通过meta标签设置视口大小
+
+​        每一款移动设备设计时，都会有一个最佳的像素比
+
+​          一般只需要将像素比设置为改制就可以得到一个最佳效果
+
+​          将像素比转化为最佳像素比的视口可以称之为完美视口
+
+​        将视口设置为完美视口
+
+​		` <meta name="viewport" content="width=device-width, initial-scale=1.0">`
+
+​        结论：以后写移动端网页时，先写这个就可以了
+
+## 3.18.less
+
+### 3.18.1.简介
+
+less是一门css的预处理语言 --less是css的增强版,
+        通过less可以编写更少的代码实现更强大的样式 --在less中添加了许多d的新特性,
+        例如对变量的支持,
+        对mixin的支持 --less语法上和css差不多,
+        但是less增添了许多对css的扩展 所以l浏览器无法直接执行less代码,
+        要执行就必须先转换成css代码再由浏览器执行
+
+### 3.18.2.选择器的嵌套
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style type="text/less">
+		html{
+			body{
+				/* less的嵌套语法,less支持选择器之间的相互嵌套 */
+			}
+		}
+	</style>
+	
+</head>
+
+<body>	
+    /* 通过引入less.js，同时将css类型改为text/less就可以在html中写less了，如同css*/
+	<script src="./less.min.js"></script>
+</body>
+
+</html>
+```
+
+
+
+### 3.18.3.less的加减乘除
+
+### 3.18.4.less的mixin函数
+
+### 3.18.5.less的变量
+
+### 3.18.6.less的避免编译
+
+```less
+// 通过@import可以将其他less文件引入到这里面
+@import"sysnx.less"
+//这个是less中的注释，不会被解析到css中
+/*
+    这个是css的注释，会被解析到css中
+*/
+body{
+    background-color: silver;
+    div{
+        width: 100px;
+        height: 100px;
+        background-color: rgb(117, 189, 199);
+    }
+}
+// 变量，可以在变量中存储一个任意的数值
+// 并且我们可以在需要时任意修改变量中的值
+// 变量的语法：@变量名:变量值
+@a:100px;	//可以代表属性值
+@m:margin;	//可以代表属性名，不推荐
+@b:red;		
+@c:box4;	//可以代表选择器名字，不推荐
+.box3{
+    width: @a;//可以代表属性值
+}
+//可以代表选择器名字
+.@{c}{
+    width: @a;
+    height: $width;
+    background-color: @b;
+}
+
+.bo1{
+    @{m}: 100px + 120px;//可以代表属性名，不推荐
+}
+.box1{
+    .box2{
+        color: red;
+    }
+    >.box3{
+        color: red;
+    }
+    +.box4{
+        color: red;
+    }
+    // &代表外层的父元素，不加&的话代表这个选择器与父元素是父子关系
+    &:hover div{
+        color: red;
+    }
+    div &:hover.box2{
+        color: red;
+    }
+}
+.p1{
+    width: 100px;
+    height: 100px;
+}
+// :extend()为当前选择器扩展指定的选择器的样式(选择器分组)
+.p2:extend(.p1){
+    color: red;
+}
+.p3{
+    // 直接对直送的样式进行引用，这里就相当于将p1的样式在这里进行了复制
+    // mixin：混合，将p2中独有的样式复制过来
+    .p2();
+}
+// 使用类选择器可以在选择器后面添加一对括号，这时我们就创建了一个mixin
+.p4(){//这个是一个混合函数，不会出现在css中，而是供其他选择器引用
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+.p5{
+    .p4();
+}
+//mixin函数，不带参数的,且会在css中显示的
+.p{}
+//mixin函数，不带参数的,且不会在css中显示的
+.p(){}
+//mixin函数，带参数的（可有多个参数），使用这个mixin时必须传对应数量的参数
+.p(@s){}
+//mixin函数，带参数的,且参数有默认值的
+.p(@s:100px){}
+//有了默认值，使用mixin时参数就不是必须的了
+//当有多个参数时，参数与值位置需对应，但是如果.p(@s:100px);在传参时指定参数值对应的参数名就可以只传
+//对应位置的参数
+// mixin函数，又名混合函数，在混合函数中是可以传参的,可以设置默认值(@s:200px)
+.test2(@s){
+    width: @s;
+}
+.test{
+    // 调用混合函数时就必须按照顺序填写参数，也可以按照变量名:值(@s:200px)的方式传参
+    .test2(200px);
+}
+// 在less中所有的数值都可以直接运算,包含加减乘除
+.bo{
+    width: 100px + 120px;
+}
+.po{
+    width: ~"calc(100px+100)";//通过在~"内容"可以避免less对其进行编译，而是保持原样
+}
+```
+
+
+
+### 3.18.7.mixin函数的匹配模式
+
+```less
+.triangle(@_){//使用@_去匹配第一个形参
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
+.triangle(R, @w, @c){//三角朝向右侧的三角
+	
+	border-style: dashed  dashed dashed solid;
+	border-color: transparent transparent transparent @c;
+	border-width: @w;
+	
+}
+
+.triangle(L, @w, @c){//三角朝向左侧的三角
+	border-style: dashed solid dashed dashed;
+	border-color: transparent @c transparent transparent;
+	border-width: @w;
+}
+
+//使用函数
+.border{
+	.triangle(R, 100px, pink);//向左侧的三角
+}
+//使用函数
+.border{
+	.triangle(R, 100px, pink);//向左侧的三角
+}
+.border1(@a, @b, @c){
+	border: @arguments;//@arguments就代表了上面的三个形参
+}
+.border2{
+	.border1(1px,solid, red);
+}
 ```
 
 
