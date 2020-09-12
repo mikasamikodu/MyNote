@@ -1,8 +1,6 @@
-# 7.java
+# 1.加载配置文件的方法
 
-## 7.1.加载配置文件的方法
-
-### 7.1.1.Properties
+## 1.1.Properties
 
 通过jdk提供的java.util.Properties类。
 
