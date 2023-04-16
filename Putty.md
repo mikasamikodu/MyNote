@@ -25,18 +25,18 @@ PuTTY 是一个跨平台的远程登录工具，包含了一组程序，包括�
 
 运行 PuTTY 就可以看到下面这个界面
 
-![img](D:\MyNote\images\05233656-f32f8a4dd91b4d238c6ec7598e4ce4f1.png)
+![img](F:\MyNote\images\05233656-f32f8a4dd91b4d238c6ec7598e4ce4f1.png)
 
 在这里输入服务器的 IP
 或主机名，选择好登录协议，还有协议的端口，如果希望把这次的输入保存起来，以后就不需要再重新输入了，就在第4步输入好会话保存的名称，比如：mail-server，或者干脆就是主机的地址，点击保存就可以了。
 
-![img](D:\MyNote\images\05233810-f79a18779a7a48b5b8fd05ae82ef891b.png)
+![img](F:\MyNote\images\05233810-f79a18779a7a48b5b8fd05ae82ef891b.png)
 
 最后点下面的 Open 按钮，输入正确的用户名和口令，就可以登录服务器了。首次登录一台主机时
 
 第一次登录时，会看到这个对话框
 
-![img](D:\MyNote\images\05234157-d4169cd8acaa46d99803fc5eaee30f0b.png)
+![img](F:\MyNote\images\05234157-d4169cd8acaa46d99803fc5eaee30f0b.png)
 
 这是要告诉你登录的主机密钥指纹，点 Yes 就保存起来，以后就不会再弹出这个窗口，然后就正常登录。点 No 不保存，下次还是要提示你，然后也可以正常登录。如果一台主机我们只是临时登录一下，当然就是点 No 了。Cancel 就是取消，也就是取消了这次登录。 如果你曾经登录过这台主机，但是又弹出来这个对话框，可能有以下几种情形：
 
@@ -50,39 +50,39 @@ PuTTY 是一个跨平台的远程登录工具，包含了一组程序，包括�
 
 成功登录主机后，输入命令，这……这……显示，又是乱码。唉，中文乱码是一个老生常谈的问题，提起来就头大。原因嘛，不外乎字符集、终端编码之类的，还是可以解决的。
 
-![img](D:\MyNote\images\05234503-34057c36ad194738b1422a1778c43511.png)
+![img](F:\MyNote\images\05234503-34057c36ad194738b1422a1778c43511.png)
 
 PuTTY 的默认字体和字符集并不适合中文显示， 在窗口标题上点击右键，选择 Change Settings...
 
-![img](D:\MyNote\images\05234556-a6dbb0fc645a44b3890765d8898f1f55.png)
+![img](F:\MyNote\images\05234556-a6dbb0fc645a44b3890765d8898f1f55.png)
 
 在打开的配置窗口左边选择 Appearance，在右边点 Font settings 里面的 Change
 按钮，选择好中文字体，比如：宋体、新宋体之类的
 
-![img](D:\MyNote\images\05234704-e4ef3a2be3fa49d5bb2b39d584d120ea.png)
+![img](F:\MyNote\images\05234704-e4ef3a2be3fa49d5bb2b39d584d120ea.png)
 
 字体选择好了，还要确定字符集。
 选择配置窗口左边的 Translation，在右边的 Received data assumed to be in
 which character set 下拉列表中选择最后一个“Use font encoding”，最后点下面的 Apply 按钮就生效了。
 
-![img](D:\MyNote\images\05234823-056a6a8edacf4c38911ae2dca966ecad.png)
+![img](F:\MyNote\images\05234823-056a6a8edacf4c38911ae2dca966ecad.png)
 
  
 
 重新执行命令 ls -l，就可以正常看到中文了
 
-![img](D:\MyNote\images\05234916-c786bf0c7f4f4f0ca1d7cc0a8610aa40.png)
+![img](F:\MyNote\images\05234916-c786bf0c7f4f4f0ca1d7cc0a8610aa40.png)
 
 怎么还是乱码？
 
 如果还是乱码的话，就执行以下命令，看看系统的字符集 echo $LANG $LANGUAGE
 
-![img](D:\MyNote\images\05235046-8849b6e6930840db8fb47c4baf18d13b.png)
+![img](F:\MyNote\images\05235046-8849b6e6930840db8fb47c4baf18d13b.png)
 
 哦，原来系统的字符集是 UTF-8 呀。重新返回上面选择字符集的那一步， 选择配置窗口左边的 Translation，在右边的 Received data
 assumed to be in which character set 下拉列表中选择“UTF-8”
 
-![img](D:\MyNote\images\05235137-cf74ea392ad847f28224778bd5131adf.png)
+![img](F:\MyNote\images\05235137-cf74ea392ad847f28224778bd5131adf.png)
 
  
 
@@ -98,12 +98,12 @@ UTF-8 了。以前安装 Redhat AS 3 时，语言选择为中文，默认的编�
 下面的这个图上，我把终端编码修改为
 zh_CN.utf8，然后也按照前面的所说的方法把 PuTTY 的字符集修改为 UTF-8。然后在终端中输入汉字“柴锋”，按左方向键，可以看到汉字显示很正常。
 
-![img](D:\MyNote\images\05235413-80e3e7a9a4e74429b67c82f2e5924c8a.png)
+![img](F:\MyNote\images\05235413-80e3e7a9a4e74429b67c82f2e5924c8a.png)
 
 我重新把终端的编码修改为 zh_CN.gb2312，同样的，把 PuTTY 的字符集修改为最后一个“Use font
 encoding”。还是在终端上输入汉字“柴锋”，按下左方向键以后，会看到汉字乱码了。
 
-![img](D:\MyNote\images\05235559-3838419941b1463d9f90f1ed6e78ba40.png)
+![img](F:\MyNote\images\05235559-3838419941b1463d9f90f1ed6e78ba40.png)
 
 至于用哪个编码，主要还是看领导的决定了，我们的领导就喜欢 GBK，连 GB18030 都不行。以前在用 Debian 的时候，好像默认都不支持 GBK
 编码。这几年公司的开发在汉字编码问题上出过几次麻烦，还不就是在 ISO8859-1,
@@ -111,7 +111,7 @@ GB2312/GBK/GB18030和UTF-8上折腾来折腾去。
 给大家看一张 emacs 的截图，看看上面的这么多语言的文字共同显示，这个会是用
 GB2312/GBK/GB18030 的编码么？
 
-![img](D:\MyNote\images\05235646-e092f18867b745e3b9047acc80b4628c.png)
+![img](F:\MyNote\images\05235646-e092f18867b745e3b9047acc80b4628c.png)
 
 用 UTF-8 也不是为了要在一个屏幕上显示好几种不认识的文字，也不一定非要是跟国际接轨弄个外包给老外开发程序做个其他语言的界面让老外用，起码不要在那么多编码里折腾了，顶多两个 ISO8859-1 和 UTF-8。发发牢骚，
 
@@ -121,18 +121,18 @@ GB2312/GBK/GB18030 的编码么？
 
 在 PuTTY 的窗口里面复制、粘贴可不能用 Windows 里的这些 Ctrl C, Ctrl Ins, Ctrl V 这些快捷键，Ctrl C 在控制台上可是终止当前的命令执行。 PuTTY 的选择、复制、粘贴这些操作都是通过鼠标来完成的。 在 Window-〉Selection 这里可以设置复制和粘贴的方式。
 
-![img](D:\MyNote\images\05235744-8481da9816294baa82c95d7b50d9c2f2.png)
+![img](F:\MyNote\images\05235744-8481da9816294baa82c95d7b50d9c2f2.png)
 
 默认的 Action of mouse buttons （鼠标按键的功能）的选项是
 Compromise，这种方式下选中有两种方式，一是直接用鼠标左键拖拉选中就可以了，二是用鼠标中键单击选中区域的开头，用滚动条拖拉到期望选中区域的末尾，再用鼠标中键单击，就可以选中了。
 选中以后，单击鼠标左键就把选中部分复制到剪贴板了。粘贴也很简单，单击鼠标右键。
 Action of mouse buttons 的第一个选项是 Windows （Windows方式的），鼠标中键的操作跟前面提到的一样。右键不是粘贴了，而是打开了右键菜单。
 
-![img](D:\MyNote\images\05235859-b09b661db5a9486592c655f2d467c6c5.png)
+![img](F:\MyNote\images\05235859-b09b661db5a9486592c655f2d467c6c5.png)
 
 其实这个右键菜单在标题栏上点击，也都可以看得到。
 
-![img](D:\MyNote\images\06000033-e211ed027bba46a589f938782570cc15.png)
+![img](F:\MyNote\images\06000033-e211ed027bba46a589f938782570cc15.png)
 
 第三个选项是 xterm （xterm 方式），这个跟默认的 Compromise 方式相反的，中键和右键的操作调换了一下，就不多说了。
 下面那个Shift overrides application's use of mouse 是和 Shift 键有关的。有些 Rogue Like 的程序，比如
@@ -143,35 +143,35 @@ mc、links、Lynx、VIM 等等，都支持鼠标操作，想在用鼠标在上�
 
  
 
-![img](D:\MyNote\images\06000427-f266f921745e4a6392883e7c68060983.png)
+![img](F:\MyNote\images\06000427-f266f921745e4a6392883e7c68060983.png)
 
 在 Control use of mouse 里面还有个 Default selection mode （默认的选择模式），默认是
 Normal，就像文字处理工具里这样的选择
 
-![img](D:\MyNote\images\06000700-dc7811fc6de14b979492aafa0668cd95.png)
+![img](F:\MyNote\images\06000700-dc7811fc6de14b979492aafa0668cd95.png)
 
 按住 Shift 键重新操作一次，哈哈，这次选中了。
 
-![img](D:\MyNote\images\06000616-f0594c1918b1430aa6b4f3dbc686ebe4.png)
+![img](F:\MyNote\images\06000616-f0594c1918b1430aa6b4f3dbc686ebe4.png)
 
 在 Control use of mouse 里面还有个 Default selection mode （默认的选择模式），默认是
 Normal，就像文字处理工具里这样的选择
 
-![img](D:\MyNote\images\06000133-ee2399a1437e470caa1d2230b6bfa1d4.png)
+![img](F:\MyNote\images\06000133-ee2399a1437e470caa1d2230b6bfa1d4.png)
 
 另外一个是 Rectangular block（块选择方式），至于用哪种方式就看自己的选择了。
 
-![img](D:\MyNote\images\06000208-70dc49fa49354559af998fbb577b5e40.png)
+![img](F:\MyNote\images\06000208-70dc49fa49354559af998fbb577b5e40.png)
 
 # 6.实时保存会话
 
 这次更改配置参数了，关闭窗口后，下次使用还是要重新选择的，麻烦。 还是回到上面修改配置的哪个地方，选择左边的 Session，在右边选择要覆盖的会话名称，或者重新输入一个新的名称，点击 Save 按钮保存。
 
-![img](D:\MyNote\images\06000940-2ca0158ef05c44ecb21402cf66436a73.png)
+![img](F:\MyNote\images\06000940-2ca0158ef05c44ecb21402cf66436a73.png)
 
 成功登录主机后，也能正常看到中文了。这样，我们就可以完成大部分的工作。最后要关闭窗口了，该怎么办呢？我见过很多人，包括我们公司负责专职维护的同事，都是直接点击窗口上的关闭按钮，完全没有理会弹出警告窗口，直接点击了Yes。
 
-![img](D:\MyNote\images\06001041-b5f35748962b434e8615434562a997f8.png)
+![img](F:\MyNote\images\06001041-b5f35748962b434e8615434562a997f8.png)
 
 这样做是不对的，首先这不是正确的注销方式，应该输入命令 exit 来正常注销；其次直接关闭窗口后，你的登录其实还在服务器上，如果一连多次的这样强制关闭窗口，用命令 w 或者 who 命令查看时，可以看到很多的用户还在系统上登录，占用了系统的资源。最重要的是，你的这次登录可能只是为了启动一下 WebLogic 或者其他什么应用服务器，直接关闭窗口后，可能会导致你的业务在随后的几分钟内也被终止，这应该不是你所希望看到的吧。 如果上述的理由是每次要输入 exit 然后回车，比较麻烦。你可以用快捷键 Ctrl d 来注销登录，一般情况下，快捷键一按窗口都直接关闭了，还省了两次鼠标点击。 在前面说道保存会话时，大家或许也注意到，下面有个 Close window on exit 有三个选项：
 

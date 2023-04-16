@@ -122,6 +122,22 @@
 
 13、 直到完成
 
+注册码：
+
+```sql
+注册码
+
+ccbfc13e-c31d-42ce-8939-3c7e63ed5417
+
+a56ea5da-f30b-4fb1-8a05-95f346a9b20b
+
+a0fe8645-3916-45d4-9976-cb6b88fecc6c
+
+b70d7f66-dac2-4462-bf51-c4e9347da763
+```
+
+
+
 二、配置环境变量
 1、MySQL的安装路径
 
@@ -460,7 +476,7 @@ Path 单击path编辑
 接着输入：
 
 ```mysql
-`mysqld ``--initialize --console`
+mysqld --initialize --console
 ```
 
 
@@ -475,8 +491,8 @@ Path 单击path编辑
 
 命令行输入：
 
-```
-`net start mysql`
+```mysql
+net start mysql
 ```
 
 

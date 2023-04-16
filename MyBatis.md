@@ -14,7 +14,7 @@
 
      ​	搭建环境时的注意事项：
 
-* 在mybatis中，他把持久层操作也映射文件叫做Mapper；
+* 在mybatis中，持久层操作的映射文件叫做Mapper；
 * 在idea中创建目录时，包的创建是三级目录，如com.itheima.dao是com->itheima->dao三级目录；目录创建时是一级目录，如com.itheima.dao是com.itheima.dao一级目录；
 * mybatis的映射配置文件位置必须和dao接口的包结构相同，如dao接口在com.itheima.dao下，则映射配置文件也要在com.itheima.dao下；
 * 映射文件的mapper标签的namespace属性取值必须是dao接口的全限定类名com.itheima.dao.Dao；
@@ -359,7 +359,7 @@ public class User implements Serializable {
 
 表user
 
-![1567134584113](D:\MyNote\images\1567134584113.png)
+![1567134584113](F:\MyNote\images\1567134584113.png)
 
 ### 11.3.4.3.主配置文件
 
@@ -796,7 +796,7 @@ IUserDao.xml：
 
 ```xml
 <update id="updateProduct" parameterType="Product" >
-    update product_
+    update product
     <set>
         <if test="name != null">name=#{name},</if>
         <if test="price != null">price=#{price}</if> 
@@ -881,7 +881,7 @@ Mybatis里面没有else标签，但是可以使用when otherwise标签来达到�
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     <mapper namespace="com.how2java.pojo">
         <select id="listProduct" resultType="Product">
-              SELECT * FROM product_
+              SELECT * FROM product
               <where>
                 <choose>
                   <when test="name != null">
@@ -903,7 +903,7 @@ Mybatis里面没有else标签，但是可以使用when otherwise标签来达到�
 
 # 11.5.连接池
 
-连接池作用是减少获取连接所消耗的时间，mybatis中给提供了三种方式的配置，配置的位置是 sqlMapCofig.xml中的dataSource标签，type属性是表示采用何种连接池方式。type属性取值有三种：
+连接池作用是减少获取连接所消耗的时间，mybatis中给提供了三种方式的配置，配置的位置是 sqlMapConfig.xml中的dataSource标签，type属性是表示采用何种连接池方式。type属性取值有三种：
 
 1.POOLED：采用传统的javax.sql.DataSource规范中的连接池，mybatis中有针对规范的实现。
 
@@ -935,15 +935,15 @@ Mybatis里面没有else标签，但是可以使用when otherwise标签来达到�
 
 用户表user：
 
-![1567479105106](D:\MyNote\images\1567479105106.png)
+![1567479105106](F:\MyNote\images\1567479105106.png)
 
 账户表account：
 
-![1567479167397](D:\MyNote\images\1567479167397.png)
+![1567479167397](F:\MyNote\images\1567479167397.png)
 
 账户表外键关系：
 
-![1567578952033](D:\MyNote\images\1567578952033.png)
+![1567578952033](F:\MyNote\images\1567578952033.png)
 
 用户表与账户表通过账户表的外键进行关联。
 
@@ -1072,15 +1072,15 @@ public class Account implements Serializable {
 
 角色表role：
 
-![1567578536068](D:\MyNote\images\1567578536068.png)
+![1567578536068](F:\MyNote\images\1567578536068.png)
 
 中间表user_role：
 
-![1567578595383](D:\MyNote\images\1567578595383.png)
+![1567578595383](F:\MyNote\images\1567578595383.png)
 
 中间表的外键关系：中间表包含两个表的主键，这两个主键在中间表里是外键
 
-![1567578696494](D:\MyNote\images\1567578696494.png)
+![1567578696494](F:\MyNote\images\1567578696494.png)
 
 
 
@@ -1698,7 +1698,7 @@ mybatis-geneator是一款mybatis自动代码生成工具，可以通过配置，
 
 在main的resource目录下创建generatorConfig.xml文件
 
- ![img](D:\MyNote\images\70asdss.png) 
+ ![img](F:\MyNote\images\70asdss.png) 
 
 配置文件中的内容如下，可根据需要自行修改
 
@@ -1799,7 +1799,7 @@ db.password=123456
 
 双击图中配置，就可以自动生成mapper和xml文件了
 
- ![img](D:\MyNote\images\20180802080625419.png) 
+ ![img](F:\MyNote\images\20180802080625419.png) 
 
 
 
@@ -1809,7 +1809,7 @@ db.password=123456
 
 解决方法：打开pom文件，在pluginManagement标签的下面创建plugins标签，然后将mybatis-generator插件配置移动到plugins标签中，如图
 
- ![img](D:\MyNote\images\20180802221910438.png) 
+ ![img](F:\MyNote\images\20180802221910438.png) 
 
 问题二：双击mybatis-generator后报错
 
@@ -1817,7 +1817,7 @@ db.password=123456
 
 解决方法：pom文件中maven的配置要加version标签，如图
 
-![img](D:\MyNote\images\20180802222250889.png) 
+![img](F:\MyNote\images\20180802222250889.png) 
 
 问题三：报错
 
@@ -1877,7 +1877,7 @@ mysql> select host,user,password,Grant_priv,Super_priv from user;
 
 如果右键没有设置权限选项，则需要新增用户，配置如下
 
- ![img](D:\MyNote\images\20180803010931371.png) 
+ ![img](F:\MyNote\images\20180803010931371.png) 
 
 然后双击管理用户，即可进行权限配置
 
