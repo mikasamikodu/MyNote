@@ -7567,9 +7567,9 @@ Field、Method、Constructor、Superclass、Interface、Annotation
 + get Annotation(Class<T> annotationClass) 
 + getDeclaredAnnotations() 
 7. 泛型相关
-  获取父类泛型类型：Type getGenericSuperclass()
-  泛型类型：ParameterizedType
-  获取实际的泛型类型参数数组：getActualTypeArguments()
+    获取父类泛型类型：Type getGenericSuperclass()
+    泛型类型：ParameterizedType
+    获取实际的泛型类型参数数组：getActualTypeArguments()
 8. 类所在的包 Package getPackage()
 
 小 结：
@@ -7761,6 +7761,105 @@ public class Test{
 ​		使用Proxy生成一个动态代理时，往往并不会凭空产生一个动态代理，这样没有太大的意义。通常都是为指定的目标对象生成动态代理。这种动态代理在AOP中被称为AOP代理，AOP代理可代替目标对象，AOP代理包含了目标对象的全部方法。但AOP代理中的方法与目标对象的方法存在差异： **AOP**代理里的方法可以在执行目标方法之前、之后插入一些通用处理
 
 <img src="D:\MyNote\images\1681742346016.png" alt="1681742346016" style="zoom:67%;" />
+
+## 13.Java8新特性
+
+​		Java 8 (又称为 jdk 1.8) 是 Java 语言开发的一个主要版本。Java 8 是oracle公司于2014年3月发布，可以看成是自Java 5 以来最具革命性的版本。Java 8为Java语言、编译器、类库、开发工具与JVM带来了大量新特性
+
+![1681914419657](D:\MyNote\images\1681914419657.png)
+
++ 速度更快
++ 代码更少(增加了新的语法：Lambda 表达式)
++ 强大的 Stream API
++ 便于并行
++ 最大化减少空指针异常：Optional
++ Nashorn引擎，允许在JVM上运行JS应用
+
+**并行流与串行流**
+
+​		并行流就是把一个内容分成多个数据块，并用不同的线程分别处理每个数据块的流。相比较串行的流，并行的流可以很大程度上提高程序的执行效率。Java 8 中将并行进行了优化，我们可以很容易的对数据进行并行操作。 Stream API 可以声明性地通过 parallel() 与 sequential() 在并行流与顺序流之间进行切换。
+
+### 13.1. Lambda表达式
+
+​		Lambda 是一个匿名函数，我们可以把 Lambda 表达式理解为是一段可以传递的代码（将代码像数据一样进行传递）。使用它可以写出更简洁、更灵活的代码。作为一种更紧凑的代码风格，使Java的语言表达能力得到了提升。
+
+从匿名类到 Lambda 的转换举例1
+
+<img src="D:\MyNote\images\1681914625058.png" alt="1681914625058" style="zoom: 67%;" />
+
+<img src="D:\MyNote\images\1681914643133.png" alt="1681914643133" style="zoom:67%;" />
+
+举例2
+
+<img src="D:\MyNote\images\1681914910793.png" alt="1681914910793" style="zoom:67%;" />
+
+**语法**
+
+Lambda 表达式：在Java 8 语言中引入的一种新的语法元素和操作符。这个操作符为 “->” ， 该操作符被称为 Lambda 操作符或箭头操作符。它将 Lambda 分为两个部分：
+**左侧**：指定了 Lambda 表达式需要的参数列表
+**右侧**：指定了 Lambda 体，是抽象方法的实现逻辑，也即Lambda 表达式要执行的功能
+
+<img src="D:\MyNote\images\1681915219417.png" alt="1681915219417" style="zoom:67%;" />
+
+<img src="D:\MyNote\images\1681915289686.png" alt="1681915289686" style="zoom:67%;" />
+
+**类型推断**
+
+上述 Lambda 表达式中的参数类型都是由编译器推断得出的。Lambda 表达式中无需指定类型，程序依然可以编译，这是因为 javac 根据程序的上下文，在后台推断出了参数的类型。Lambda 表达式的类型依赖于上下文环境，是由编译器推断出来的。这就是所谓的“类型推断”。
+
+### 13.2.函数式接口
+
+​		只包含一个抽象方法的接口，称为函数式接口。你可以通过 Lambda 表达式来创建该接口的对象。（若 Lambda 表达式抛出一个受检异常(即：非运行时异常)，那么该异常需要在目标接口的抽象方法上进行声明）。我们可以在一个接口上使用 **@FunctionalInterface** 注解，这样做可以检查它是否是一个函数式接口。同时javadoc 也会包含一条声明，说明这个接口是一个函数式接口。 在java.util.function包下定义了Java 8 的丰富的函数式接口。
+
+​		Java从诞生日起就是一直倡导“一切皆对象”，在Java里面面向对象(OOP) 编程是一切。但是随着python、scala等语言的兴起和新技术的挑战，Java不 得不做出调整以便支持更加广泛的技术要求，也即java不但可以支持OOP还 可以支持OOF（面向函数编程） 。
+
+​		在函数式编程语言当中，函数被当做一等公民对待。在将函数作为一等公民的编程语言中，Lambda表达式的类型是函数。但是在Java8中，有所不同。在 Java8中，Lambda表达式是对象，而不是函数，它们必须依附于一类特别的对象类型——函数式接口。简单的说，在Java8中，Lambda表达式就是一个函数式接口的实例。这就是Lambda表达式和函数式接口的关系。也就是说，只要一个对象是函数式接口的实例，那么该对象就可以用Lambda表达式来表示。所以以前用匿名实现类表示的现在都可以用Lambda表达式来写。
+
+<img src="D:\MyNote\images\1681915687610.png" alt="1681915687610" style="zoom:67%;" />
+
+**自定义函数式接口**
+
+<img src="D:\MyNote\images\1681915712139.png" alt="1681915712139" style="zoom:50%;" />
+
+**函数式接口中使用泛型：**
+
+<img src="D:\MyNote\images\1681915735634.png" alt="1681915735634" style="zoom:50%;" />
+
+**作为参数传递** **Lambda** **表达式**
+
+<img src="D:\MyNote\images\1681915797745.png" alt="1681915797745" style="zoom:67%;" />
+
+作为参数传递 Lambda 表达式：为了将 Lambda 表达式作为参数传递，接收Lambda表达式的参数类型必须是与该 Lambda 表达式兼容的函数式接口的类型。
+
+**Java** **内置四大核心函数式接口**
+
+![1681916076765](D:\MyNote\images\1681916076765.png)
+
+**其他接口** 
+
+![1681916126740](D:\MyNote\images\1681916126740.png)
+
+### 13.3.方法引用与构造器引用
+
+**方法引用**
+
++ 当要传递给Lambda体的操作，已经有实现的方法了，可以使用方法引用！
++ 方法引用可以看做是Lambda表达式深层次的表达。换句话说，方法引用就是Lambda表达式，也就是函数式接口的一个实例，通过方法的名字来指向一个方法，可以认为是Lambda表达式的一个语法糖。
++ 要求：实现接口的抽象方法的参数列表和返回值类型，必须与方法引用的
+方法的参数列表和返回值类型保持一致！
++ 格式：使用操作符 “::” 将类(或对象) 与 方法名分隔开来。
++ 如下三种主要使用情况：
+  + 对象::实例方法名
+  + 类::静态方法名
+  + 类::实例方法名
+
+
+
+
+
+
+
+
 
 
 
