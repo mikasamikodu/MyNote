@@ -7845,19 +7845,845 @@ Lambda 表达式：在Java 8 语言中引入的一种新的语法元素和操作
 
 + 当要传递给Lambda体的操作，已经有实现的方法了，可以使用方法引用！
 + 方法引用可以看做是Lambda表达式深层次的表达。换句话说，方法引用就是Lambda表达式，也就是函数式接口的一个实例，通过方法的名字来指向一个方法，可以认为是Lambda表达式的一个语法糖。
-+ 要求：实现接口的抽象方法的参数列表和返回值类型，必须与方法引用的
-方法的参数列表和返回值类型保持一致！
++ 要求：实现接口的抽象方法的参数列表和返回值类型，必须与方法引用的方法的参数列表和返回值类型保持一致！
 + 格式：使用操作符 “::” 将类(或对象) 与 方法名分隔开来。
 + 如下三种主要使用情况：
   + 对象::实例方法名
   + 类::静态方法名
   + 类::实例方法名
 
+![1683121267387](D:\MyNote\images\1683121267387.png)
+
+BiPredicate是函数式接口，有一个抽象方法test
+
+![1683121361882](D:\MyNote\images\1683121361882.png)
+
+注意：当函数式接口方法的第一个参数是需要引用方法的调用者，并且第二个参数是需要引用方法的参数(或无参数)时：ClassName::methodName
+
+**构造器引用**
+
+**格式：** **ClassName::new**  
+
+与函数式接口相结合，自动与函数式接口中方法兼容。可以把构造器引用赋值给定义的方法，要求构造器参数列表要与接口中抽象方法的参数列表一致！且方法的返回值即为构造器对应类的对象。
+
+![1683122947598](D:\MyNote\images\1683122947598.png)
+
+**数组引用** 
+
+**格式：** **type[] :: new**
+
+![1683123018570](D:\MyNote\images\1683123018570.png)
+
+### 13.4.Stream API
+
++ Java8中有两大最为重要的改变。第一个是 Lambda 表达式；另外一个则是 Stream API。
+
++ Stream API ( java.util.stream) 把真正的函数式编程风格引入到Java中。这是目前为止对Java类库最好的补充，因为Stream API可以极大提高Java程序员的生产力，让程序员写出高效率、干净、简洁的代码。
+
++ Stream 是 Java8 中处理集合的关键抽象概念，它可以指定你希望对集合进行的操作，可以执行非常复杂的查找、过滤和映射数据等操作。 使用Stream API 对集合数据进行操作，就类似于使用 SQL 执行的数据库查询。
+  也可以使用 Stream API 来并行执行操作。简言之，Stream API 提供了一种高效且易于使用的处理数据的方式。 
+
++ 实际开发中，项目中多数数据源都来自于Mysql，Oracle等。但现在数据源可以更多了，有MongDB，Radis等，而这些NoSQL的数据就需要 Java层面去处理。 
+
++ Stream 和 Collection 集合的区别：Collection 是一种静态的内存数据结构，而 Stream 是有关计算的。前者是主要面向内存，存储在内存中， 后者主要是面向 CPU，通过 CPU 实现计算。
+
++ **Stream**是数据渠道，用于操作数据源（集合、数组等）所生成的元素序列。 “集合讲的是数据，Stream讲的是计算！”
+
++ **注意：** 
+
+  ①Stream 自己不会存储元素。 
+
+  ②Stream 不会改变源对象。相反，他们会返回一个持有结果的新Stream。 
+
+  ③Stream 操作是延迟执行的。这意味着他们会等到需要结果的时候才执行。
+
+**Stream** **的操作三个步骤**
+
++ 1- 创建 Stream
+  一个数据源（如：集合、数组），获取一个流
++ 2- 中间操作
+  一个中间操作链，对数据源的数据进行处理
++ 3- 终止操作(终端操作)
+  一旦执行终止操作，就执行中间操作链，并产生结果。之后，不会再被使用
+
+创建 Stream方式一：通过集合
+
+Java8 中的 Collection 接口被扩展，提供了两个获取流的方法： 
+
++ **default Stream stream() :** **返回一个顺序流** 
+
++ **default Stream parallelStream() :** **返回一个并行流**
+
+创建 Stream方式二：通过数组
+
+Java8 中的 Arrays 的静态方法 stream() 可以获取数组流：
+
++ **static  Stream stream(T[] array):** **返回一个流**
+
+**重载形式，能够处理对应基本类型的数组：**
+
++ public static IntStream stream(int[] array) 
+
++ public static LongStream stream(long[] array) 
+
++ public static DoubleStream stream(double[] array)
+
+创建 Stream方式三：通过Stream的of()
+
+可以调用Stream类静态方法 of(), 通过显示值创建一个流。它可以接收任意数量的参数。
+
++ **public static Stream of(T... values) :** **返回一个流**
+
+创建 Stream方式四：创建无限流
+
+可以使用静态方法 Stream.iterate() 和 Stream.generate(),  创建无限流。 
+
++ 迭代
+  public static<T> Stream<T> iterate(final T seed, final UnaryOperator<T> f) 
++ 生成
+  public static<T> Stream<T> generate(Supplier<T> s)
+
+```java
+// 方式四：创建无限流
+@Test
+public void test4() {
+    // 迭代
+    // public static<T> Stream<T> iterate(final T seed, final UnaryOperator<T> f)
+    Stream<Integer> stream = Stream.iterate(0, x -> x + 2);
+    stream.limit(10).forEach(System.out::println);
+    // 生成
+    // public static<T> Stream<T> generate(Supplier<T> s)
+    Stream<Double> stream1 = Stream.generate(Math::random);
+    stream1.limit(10).forEach(System.out::println);
+}
+```
+
+**Stream** **的中间操作**
+
+多个中间操作可以连接起来形成一个流水线，除非流水线上触发终止操作，否则中间操作不会执行任何的处理！而在终止操作时一次性全部处理，称为“惰性求值”。
+
+**1-筛选与切片**
+
+![1683123624922](D:\MyNote\images\1683123624922.png)
+
+**2-映 射**
+
+![1683123693020](D:\MyNote\images\1683123693020.png)
+
+**3-排序**
+
+![1683123740668](D:\MyNote\images\1683123740668.png)
+
+**Stream** **的终止操作** 
+
+终端操作会从流的流水线生成结果。其结果可以是任何不是流的值，例如：List、Integer，甚至是 void。流进行了终止操作后，不能再次使用。 
+
+**1-匹配与查找**
+
+![1683123803365](D:\MyNote\images\1683123803365.png)
+
+![1683123845965](D:\MyNote\images\1683123845965.png)
+
+**2-归约**
+
+![1683123879207](D:\MyNote\images\1683123879207.png)
+
+备注：map 和 reduce 的连接通常称为 map-reduce 模式，因 Google用它来进行网络搜索而出名。
+
+**3-收集**
+
+![1683123945021](D:\MyNote\images\1683123945021.png)
+
+Collector 接口中方法的实现决定了如何对流执行收集的操作(如收集到 List、Set、Map)。 
+
+另外， Collectors 实用类提供了很多静态方法，可以方便地创建常见收集器实例， 具体方法与实例如下表：
+
+![1683124014154](D:\MyNote\images\1683124014154.png)
+
+![1683124054587](D:\MyNote\images\1683124054587.png)
+
+### 13.5.Optional类
+
++ 到目前为止，臭名昭著的空指针异常是导致Java应用程序失败的最常见原因。以前，为了解决空指针异常，Google公司著名的Guava项目引入了Optional类，Guava通过使用检查空值的方式来防止代码污染，它鼓励程序员写更干净的代码。受到Google Guava的启发，Optional类已经成为Java 8类库的一部分。
++ Optional<T> 类(java.util.Optional) 是一个容器类，它可以保存类型T的值，代表这个值存在。或者仅仅保存null，表示这个值不存在。原来用 null 表示一个值不存在，现在 Optional 可以更好的表达这个概念。并且可以避免空指针异常。
++ Optional类的Javadoc描述如下：这是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。
 
 
 
+Optional提供很多有用的方法，这样我们就不用显式进行空值检测。
+
++ 创建Optional类对象的方法：
+  + Optional.of(T t) : 创建一个 Optional 实例，t必须非空；
+  + Optional.empty() : 创建一个空的 Optional 实例
+  + Optional.ofNullable(T t)：t可以为null
++ 判断Optional容器中是否包含对象：
+  + boolean isPresent() : 判断是否包含对象
+  + void ifPresent(Consumer<? super T> consumer) ：如果有值，就执行Consumer接口的实现代码，并且该值会作为参数传给它。
++ 获取Optional容器的对象：
+  + T get(): 如果调用对象包含值，返回该值，否则抛异常
+  + T orElse(T other) ：如果有值则将其返回，否则返回指定的other对象。
+  + T orElseGet(Supplier<? extends T> other) ：如果有值则将其返回，否则返回由Supplier接口实现提供的对象。
+  + T orElseThrow(Supplier<? extends X> exceptionSupplier) ：如果有值则将其返回，否则抛出由Supplier接口实现提供的异常。
+
+```java
+@Test
+public void test1() {
+    Boy b = new Boy("张三");
+    Optional<Girl> opt = Optional.ofNullable(b.getGrilFriend());
+    // 如果女朋友存在就打印女朋友的信息
+    opt.ifPresent(System.out::println);
+}
+@Test
+public void test2() {
+    Boy b = new Boy("张三");
+    Optional<Girl> opt = Optional.ofNullable(b.getGrilFriend());
+    // 如果有女朋友就返回他的女朋友，否则只能欣赏“嫦娥”了
+    Girl girl = opt.orElse(new Girl("嫦娥"));
+    System.out.println("他的女朋友是：" + girl.getName());
+}
+
+@Test
+public void test3(){
+    Optional<Employee> opt = Optional.of(new Employee("张三", 8888));
+    //判断opt中员工对象是否满足条件，如果满足就保留，否则返回空
+    Optional<Employee> emp = opt.filter(e -> e.getSalary()>10000);
+    System.out.println(emp);
+}
+@Test
+public void test4(){
+    Optional<Employee> opt = Optional.of(new Employee("张三", 8888));
+    //如果opt中员工对象不为空，就涨薪10%
+    Optional<Employee> emp = opt.map(e -> 
+                                     {e.setSalary(e.getSalary()%1.1);return e;});
+    System.out.println(emp);
+}
+```
 
 
+
+## 14.Java9、10、11新特性
+
+### 14.1.Java 9
+
++ 经过4次跳票，历经曲折的Java 9 终于终于在2017年9月21日发布。
++ 从Java 9 这个版本开始，Java 的计划发布周期是 6 个月，下一个 Java 的主版本将于 2018 年 3 月发布，命名为 Java 18.3，紧接着再过六个月将发布 Java18.9。
++ 这意味着Java的更新从传统的以特性驱动的发布周期，转变为以时间驱动的（6 个月为周期）发布模式，并逐步的将 Oracle JDK 原商业特性进行开源。
++ 针对企业客户的需求，Oracle 将以三年为周期发布长期支持版本（long term support）。
++ Java 9 提供了超过150项新功能特性，包括备受期待的模块化系统、可交互的 REPL 工具：jshell，JDK 编译工具，Java 公共 API 和私有代码，以及安全增强、扩展提升、性能管理改善等。可以说Java 9是一个庞大的系统工程，完全做了一个整体改变。
+
+Java 9 中有哪些不得不说的新特性
+
++ 模块化系统 
+
++ jShell命令 
+
++ 多版本兼容jar包 
+
++ 接口的私有方法 
+
++ 钻石操作符的使用升级 
+
++ 语法改进：try语句 
+
++ S tring存储结构变更 
+
++ 便利的集合特性：of() 
+
++ 增强的Stream API 
+
++ 全新的HTTP客户端API 
+
++ Deprecated的相关API 
+
++ javadoc的HTML 5支持 
+
++ Javascript引擎升级：Nashorn 
+
++ java的动态编译器
+
+官方提供的新特性列表： 
+
+https://docs.oracle.com/javase/9/whatsnew/toc.htm#JSNEW-GUID-C23AFD78-C777-460B-8ACE-58BE5EA681F6 
+
+或参考 Open JDK 
+
+http://openjdk.java.net/projects/jdk9/ 
+
+在线Oracle JDK 9 Documentation 
+
+https://docs.oracle.com/javase/9/
+
+**JDK 8 的目录结构**
+
+![1683124954982](D:\MyNote\images\1683124954982.png)
+
+![1683124976322](D:\MyNote\images\1683124976322.png)
+
+**JDK 9 的目录结构**
+
+![1683125048365](D:\MyNote\images\1683125048365.png)
+
+![1683125089131](D:\MyNote\images\1683125089131.png)
+
+#### 14.1.1.模块化系统
+
+谈到 Java 9 大家往往第一个想到的就是 Jigsaw 项目。众所周知，Java 已经发展超过 20 年（95 年最初发布），Java 和相关生态在不断丰富的同时也越来越暴露出一些问题：
+
++ Java 运行环境的膨胀和臃肿。每次JVM启动的时候，至少会有30～60MB的内存加载，主要原因是JVM需要加载rt.jar，不管其中的类是否被classloader加载，第一步整个jar都会被JVM加载到内存当中去（而模块化可以根据模块的需要加载程序运行需要的class）
++ 当代码库越来越大，创建复杂，盘根错节的“意大利面条式代码”的几率呈指数级的增长。不同版本的类库交叉依赖导致让人头疼的问题，这些都阻碍了 Java 开发和运行效率的提升。
++ 很难真正地对代码进行封装, 而系统并没有对不同部分（也就是 JAR 文件）之间的依赖关系有个明确的概念。每一个公共类都可以被类路径之下任何其它的公共类所访问到，这样就会导致无意中使用了并不想被公开访问的 API。
++ 本质上讲也就是说，用模块来管理各个package，通过声明某个package暴露，模块(module)的概念，其实就是package外再裹一层，不声明默认就是隐藏。因此，模块化使得代码组织上更安全，因为它可以指定哪些部分可以暴露，哪些部分隐藏。
+
+**实现目标** 
+
++ 模块化的主要目的在于减少内存的开销 
+
++ 只须必要模块，而非全部jdk模块，可简化各种类库和大型应用的开发和维护 
+
++ 改进 Java SE 平台，使其可以适应不同大小的计算设备 
+
++ 改进其安全性，可维护性，提高性能
+
+模块将由通常的类和新的模块声明文件（module-info.java）组成。该文件是位于 java代码结构的顶层，该模块描述符明确地定义了我们的模块需要什么依赖关系， 以及哪些模块被外部使用。在exports子句中未提及的所有包默认情况下将封装在模块中，不能在外部使用。
+
+![1683468874517](D:\MyNote\images\1683468874517.png)
+
+要想在java9demo模块中调用java9test模块下包中的结构，需要在java9test的module-info.java中声明： 
+
+```java
+/**
+* @author songhongkang
+* @create 2019 下午 11:57
+*/
+module java9test {
+    //package we export
+    exports com.atguigui.bean;
+}
+```
+
+**exports**：控制着哪些包可以被其它模块访问到。所有不被导出的包默认**都被封装在模块里面。**
+
+对应在java 9demo 模块的src 下创建module-info.java文件： 
+
+```java
+/**
+* @author songhongkang
+* @create 2019 下午 11:51
+*/
+module java9demo {
+	requires java9test;
+}
+```
+
+**requires**：指明对其它模块的依赖。
+
+
+
+#### 14.1.2. jShell命令
+
+**产生背景** 
+
+像Python 和 Scala 之类的语言早就有交互式编程环境 REPL (read - evaluate - print - loop)了，以交互式的方式对语句和表达式进行求值。开发者只需要输入一些代码， 就可以在编译前获得对程序的反馈。而之前的Java版本要想执行代码，必须创建文件、声明类、提供测试方法方可实现。 
+
+**设计理念** 
+
+**即写即得、快速运行**
+
+**实现目标** 
+
++ Java 9 中终于拥有了 REPL工具：jShell。让Java可以像脚本语言一样运行，从控制台启动jShell，利用jShell在没有创建类的情况下直接声明变量，计算表达式， 执行语句。即开发时可以在命令行里直接运行Java的代码，而无需创建Java文件，无需跟人解释”public static void main(String[] args)”这句废话。 
+
++ jShell也可以从文件中加载语句或者将语句保存到文件中。 
+
++ jShell也可以是tab键进行自动补全和自动添加分号。
+
+**调出jShell**
+
+<img src="D:\MyNote\images\1683469293996.png" alt="1683469293996" style="zoom:67%;" />
+
+**获取帮助**
+
+<img src="D:\MyNote\images\1683469338290.png" alt="1683469338290" style="zoom:80%;" />
+
+**基本使用**
+
+![1683469383655](D:\MyNote\images\1683469383655.png)
+
+![1683469411815](D:\MyNote\images\1683469411815.png)
+
+**导入指定的包**
+
+![1683469440149](D:\MyNote\images\1683469440149.png)
+
+**默认导入的包**
+
+![1683469470141](D:\MyNote\images\1683469470141.png)
+
+Tips：在JShell环境下，语句末尾的“;”是可选的。但推荐还是最好加上。提高代码可读性。
+
+只需按下Tab键即可自动补全代码
+
+<img src="D:\MyNote\images\1683469545437.png" alt="1683469545437"  />
+
+列出当前session中所有有效的代码片段
+
+![1683469605029](D:\MyNote\images\1683469605029.png)
+
+列出当前session中所有创建过的变量
+
+![1683469643505](D:\MyNote\images\1683469643505.png)
+
+列出当前session中所有创建过的方法
+
+![1683469664938](D:\MyNote\images\1683469664938.png)
+
+使用外部代码编辑器来编写Java代码
+
+![1683469701553](D:\MyNote\images\1683469701553.png)
+
+Tips：我们还可以重新定义相同方法名和参数列表的方法，即为对现有方法的修改（或覆盖）。
+
+使用**/open**命令调用：
+
+![1683469755049](D:\MyNote\images\1683469755049.png)
+
+**没有受检异常（编译时异常）**
+
+![1683469785824](D:\MyNote\images\1683469785824.png)
+
+说明：本来应该强迫我们捕获一个IOException，但却没有出现。因为jShell在后台为我们隐藏了。 
+
+使用exit**退出jShell**
+
+#### 14.1.3.接口的私有方法
+
+Java8中规定接口中的方法除了抽象方法之外，还可以定义静态方法和默认的方法。一定程度上，扩展了接口的功能，此时的接口更像是一个抽象类。
+
+在Java9中，接口更加的灵活和强大，连方法的访问权限修饰符都可以声明为private的了，此时方法将不会成为你对外暴露的API的一部分。
+
+```java
+interfaceMyInterface {
+    voidnormalInterfaceMethod();
+    defaultvoidmethodDefault1() {
+        init();
+    }
+    publicdefaultvoidmethodDefault2() {
+        init();
+    }
+// This method is not part of the public API exposed by MyInterface
+    privatevoidinit() {
+        System.out.println("默认方法中的通用操作");
+    }
+}
+
+
+classMyInterfaceImpl implementsMyInterface {
+    @Override
+    publicvoidnormalInterfaceMethod() {
+        System.out.println("实现接口的方法");
+    }
+}
+publicclassMyInterfaceTest {
+    publicstaticvoidmain(String[] args) {
+        MyInterfaceImpl impl= newMyInterfaceImpl();impl.methodDefault1();
+// impl.init();//不能调用
+    }
+}
+```
+
+
+
+#### 14.1.4.钻石操作符使用升级
+
+我们将能够与匿名实现类共同使用钻石操作符（diamondoperator）在Java8 中如下的操作是会报错的：
+
+```java
+Comparator<Object> com = new Comparator<>(){
+    
+    @Override
+    public int compare(Object o1, Object o2) {
+        return 0;
+    }
+};
+
+//编译报错信息：Cannotuse“<>”withanonymousinnerclasses.
+```
+
+
+
+Java 9中如下操作可以正常执行通过：
+
+```java
+// anonymous classes can now use type inference 
+Comparator<Object> com = new Comparator<>(){
+    @Override
+    public int compare(Object o1, Object o2) {
+        return 0;
+    }
+};
+```
+
+
+
+#### 14.1.5.try语句
+
+Java 8 中，可以实现资源的自动关闭，但是要求执行后必须关闭的所有资源必须在try子句中初始化，否则编译不通过。如下例所示： 
+
+```java
+try(InputStreamReader reader = new InputStreamReader(System.in)){
+    //读取数据细节省略
+}catch (IOException e){
+    e.printStackTrace();
+}
+```
+
+Java 9 中，用资源语句编写try将更容易，我们可以在try子句中使用已经初始化过的资源，此时的资源是final的： 
+
+```java
+InputStreamReader reader = new InputStreamReader(System.in);
+OutputStreamWriter writer = new OutputStreamWriter(System.out);
+try (reader; writer) {
+    //reader是final的，不可再被赋值
+    //reader = null;
+    //具体读写操作省略
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+
+
+#### 14.1.6.String存储结构变更
+
+**Motivation**
+
+The current implementation of the String class stores characters in a char  array, using two bytes (sixteen bits) for each character. Data gathered from  many different applications indicates that strings are a major component of  heap usage and, moreover, that most String objects contain only Latin-1  characters. Such characters require only one byte of storage, hence half of the  space in the internal char arrays of such String objects is going unused. 
+
+**Description** 
+
+We propose to change the internal representation of the String class from a  UTF-16 char array to a byte array plus an encoding-flag field. The new String  class will store characters encoded either as ISO-8859-1/Latin-1 (one byte per  character), or as UTF-16 (two bytes per character), based upon the contents  of the string. The encoding flag will indicate which encoding is used.
+
+结论：String 再也不用 char[] 来存储啦，改成了 byte[] 加上编码标记，节约了一些空间。 
+
+```java
+public final class String
+    implements java.io.Serializable, Comparable<String>, CharSequence {
+    @Stable
+    private final byte[] value;
+}
+```
+
+那StringBuffer 和 StringBuilder 是否仍无动于衷呢？
+
+String-related classes such as AbstractStringBuilder, StringBuilder,  and StringBuffer will be updated to use the same representation, as will the  HotSpot VM‘s intrinsic(固有的、内置的) string operations.
+
+#### 14.1.7.快速创建只读集合
+
+要创建一个只读、不可改变的集合，必须构造和分配它，然后添加元素，最后包装成一个不可修改的集合。 
+
+```java
+List<String> namesList = new ArrayList <>();
+namesList.add("Joe");
+namesList.add("Bob");
+namesList.add("Bill");
+namesList = Collections.unmodifiableList(namesList);
+System.out.println(namesList);
+```
+
+缺点：我们一下写了五行。即：它不能表达为单个表达式。
+
+```java
+List<String> list = Collections.unmodifiableList(Arrays.asList("a", "b", "c"));
+Set<String> set = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("a", 
+                                                                          "b", "c")));
+// 如下操作不适用于jdk 8 及之前版本,适用于jdk 9
+Map<String, Integer> map = Collections.unmodifiableMap(new HashMap<>() {
+    {
+        put("a", 1);
+        put("b", 2);
+        put("c", 3);
+    }
+});
+map.forEach((k, v) -> System.out.println(k + ":" + v));
+```
+
+Java 9因此引入了方便的方法，这使得类似的事情更容易表达。
+
+![1683471197867](D:\MyNote\images\1683471197867.png)
+
+List firsnamesList = List.of(“Joe”,”Bob”,”Bill”); 
+
+调用集合中静态方法of()，可以将不同数量的参数传输到此工厂方法中。此功能可用于Set和List，也可用于Map的类似形式。此时得到的集合，是不可变的：在创建后，继续添加元素到这些集合会导致 “UnsupportedOperationException” 。由于Java 8中接口方法的实现，可以直接在List，Set和Map的接口内定义这些方法， 便于调用。 
+
+```java
+List<String> list = List.of("a", "b", "c");
+Set<String> set = Set.of("a", "b", "c");
+Map<String, Integer> map1 = Map.of("Tom", 12, "Jerry", 21, "Lilei", 33, "HanMeimei", 18);
+Map<String, Integer> map2 = Map.ofEntries(Map.entry("Tom", 89), 
+Map.entry("Jim", 78), Map.entry("Tim", 98));
+```
+
+#### 14.1.8.InputStream 加强
+
+InputStream 终于有了一个非常有用的方法：transferTo，可以用来将数据直接传输到 OutputStream，这是在处理原始数据流时非常常见的一种用法，如下示例。
+
+```java
+ClassLoader cl = this.getClass().getClassLoader();
+try (InputStream is = cl.getResourceAsStream("hello.txt");
+     OutputStream os = new FileOutputStream("src\\hello1.txt")) {
+    is.transferTo(os); // 把输入流中的所有数据直接自动地复制到输出流中
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+#### 14.1.9.增强的 Stream API
+
+​		Java 的 Steam API 是java标准库最好的改进之一，让开发者能够快速运算，从而能够有效的利用数据并行计算。Java 8 提供的 Steam 能够利用多核架构实现声明式的数据处理。
+​		在 Java 9 中，Stream API 变得更好，Stream 接口中添加了 4 个新的方法：takeWhile, dropWhile, ofNullable，还有个 iterate 方法的新重载方法，可以让你提供一个 Predicate (判断条件)来指定什么时候结束迭代。
+​		除了对 Stream 本身的扩展，Optional 和 Stream 之间的结合也得到了改进。现在可以通过 Optional 的新方法 stream() 将一个 Optional 对象转换为一个(可能是空的) Stream 对象。
+
+**takeWhile()**
+
+用于从 Stream 中获取一部分数据，接收一个 Predicate 来进行选择。在有序的Stream 中，takeWhile 返回从开头开始的尽量多的元素。 
+
+```java
+List<Integer> list = Arrays.asList(45, 43, 76, 87, 42, 77, 90, 73, 67, 88);
+list.stream().takeWhile(x -> x < 50).forEach(System.out::println);
+System.out.println();
+list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
+list.stream().takeWhile(x -> x < 5).forEach(System.out::println);
+```
+
+**dropWhile()**
+
+dropWhile 的行为与 takeWhile 相反，返回剩余的元素。 
+
+```java
+List<Integer> list = Arrays.asList(45, 43, 76, 87, 42, 77, 90, 73, 67, 88);
+list.stream().dropWhile(x -> x < 50).forEach(System.out::println);
+System.out.println();
+list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
+list.stream().dropWhile(x -> x < 5).forEach(System.out::println);
+```
+
+**ofNullable()**
+
+Java 8 中 Stream 不能完全为null，否则会报空指针异常。而 Java 9 中的 ofNullable 方法允许我们创建一个单元素 Stream，可以包含一个非空元素，也可以创建一个空Stream
+
+```java
+// 报NullPointerException
+// Stream<Object> stream1 = Stream.of(null);
+// System.out.println(stream1.count());
+// 不报异常，允许通过
+Stream<String> stringStream = Stream.of("AA", "BB", null);
+System.out.println(stringStream.count());// 3
+// 不报异常，允许通过
+List<String> list = new ArrayList<>();
+list.add("AA");
+list.add(null);
+System.out.println(list.stream().count());// 2
+// ofNullable()：允许值为null
+Stream<Object> stream1 = Stream.ofNullable(null);
+System.out.println(stream1.count());// 0
+Stream<String> stream = Stream.ofNullable("hello world");
+System.out.println(stream.count());// 1
+```
+
+**iterate()**
+
+这个 iterate 方法的新重载方法，可以让你提供一个 Predicate (判断条件)来指定什么时候结束迭代
+
+```java
+// 原来的控制终止方式：
+Stream.iterate(1, i -> i + 1).limit(10).forEach(System.out::println);
+// 现在的终止方式：
+Stream.iterate(1, i -> i < 100, i -> i + 1).forEach(System.out::println);
+```
+
+
+
+#### 14.1.10.Optional获取Stream的方法
+
+Optional类中stream()的使用
+
+```java
+List<String> list = new ArrayList<>();
+list.add("Tom");
+list.add("Jerry");
+list.add("Tim");
+Optional<List<String>> optional = Optional.ofNullable(list);
+Stream<List<String>> stream = optional.stream();
+stream.flatMap(x -> x.stream()).forEach(System.out::println);
+```
+
+
+
+#### 14.1.11.Nashorn
+
+​		Nashorn 项目在 JDK 9 中得到改进，它为 Java 提供轻量级的 Javascript 运行时。 Nashorn 项目跟随 Netscape 的 Rhino 项目，目的是为了在 Java 中实现一个高性能但轻量级的 Javascript 运行时。Nashorn 项目使得 Java 应用能够嵌入 Javascript。它在 JDK 8 中为 Java 提供一个 Javascript 引擎。 
+
+​		JDK 9 包含一个用来解析 Nashorn 的 ECMAScript 语法树的 API。这个 API 使得 IDE 和服务端框架不需要依赖 Nashorn 项目的内部实现类，就能够分析ECMAScript 代码。
+
+<img src="D:\MyNote\images\1683555420403.png" alt="1683555420403" style="zoom:67%;" />
+
+### 14.2.Java10
+
+ 		2018年3月21日，Oracle官方宣布Java10正式发布。需要注意的是 Java 9 和 Java 10 都不是 LTS (Long-Term-Support) 版本。和过去的 Java 大版本升级不同，这两个只有半年左右的开发和维护期。而未来的 Java 11，也就是 18.9 LTS，才是 Java 8 之后第一个 LTS 版本。JDK10一共定义了109个新特性，其中包含12个JEP（对于程序员来讲，真正的新特性其实就一个），还有一些新API和JVM规范以及JAVA语言规范上的改动。
+
+JDK10的12个JEP（JDK Enhancement Proposal特性加强提议）参阅官方文档：http://openjdk.java.net/projects/jdk/10/
+
+```java
+286: Local-Variable Type Inference 局部变量类型推断
+296: Consolidate the JDK Forest into a Single Repository JDK库的合并
+304: Garbage-Collector Interface 统一的垃圾回收接口
+307: Parallel Full GC for G1 为G1提供并行的Full GC
+310: Application Class-Data Sharing 应用程序类数据（AppCDS）共享
+312: Thread-Local Handshakes ThreadLocal握手交互
+313: Remove the Native-Header Generation Tool (javah) 移除JDK中附带的javah工具
+314: Additional Unicode Language-Tag Extensions 使用附加的Unicode语言标记扩展
+316: Heap Allocation on Alternative Memory Devices 能将堆内存占用分配给用户指定
+的备用内存设备
+317: Experimental Java-Based JIT Compiler 使用基于Java的JIT编译器
+319: Root Certificates 根证书
+322: Time-Based Release Versioning 基于时间的发布版本
+```
+
+**一、局部变量类型推断** 
+
++ 产生背景
+  开发者经常抱怨Java中引用代码的程度。局部变量的显示类型声明，常常被认为是不必须的，给一个好听的名字经常可以很清楚的表达出下面应该怎样继续。
+
++ 好处：
+  减少了啰嗦和形式的代码，避免了信息冗余，而且对齐了变量名，更容易阅读！
+
+  举例如下：
+
+  + 场景一：类实例化时
+    作为 Java开发者，在声明一个变量时，我们总是习惯了敲打两次变量类型，第一次用于声明变量类型，第二次用于构造器。
+    `LinkedHashSet<Integer> set = new LinkedHashSet<>();`
+
+  + 场景二：返回值类型含复杂泛型结构
+    变量的声明类型书写复杂且较长，尤其是加上泛型的使用
+    `Iterator<Map.Entry<Integer, Student>> iterator = set.iterator();`
+
+  + 场景三：
+
+    我们也经常声明一种变量，它只会被使用一次，而且是用在下一行代码中， 比如： 
+
+```java
+URL url = new URL("http://www.atguigu.com"); 
+URLConnection connection = url.openConnection(); 
+Reader reader = new BufferedReader(new InputStreamReader(connection.getInputStream())); 
+```
+
+
+
+尽管 IDE可以帮我们自动完成这些代码，但当变量总是跳来跳去的时候，可读性还是会受到影响，因为变量类型的名称由各种不同长度的字符组成。而且， 有时候开发人员会尽力避免声明中间变量，因为太多的类型声明只会分散注意力，不会带来额外的好处。
+
+**适用于以下情况：** 
+
+```java
+//1.局部变量的初始化
+var list = new ArrayList<>();
+//2.增强for循环中的索引
+for(var v : list) {
+	System.out.println(v);
+}
+//3.传统for循环中
+for(var i = 0;i < 100;i++) {
+	System.out.println(i);
+}
+```
+
+**在局部变量中使用时，如下情况不适用：** 
+
+初始值为null 
+
+![1683558533845](D:\MyNote\images\1683558533845.png)
+
+方法引用
+
+![1683558550413](D:\MyNote\images\1683558550413.png)
+
+Lambda表达式
+
+![1683558569066](D:\MyNote\images\1683558569066.png)
+
+为数组静态初始化 
+
+![1683558585185](D:\MyNote\images\1683558585185.png)
+
+**不适用以下的结构中：** 
+
++ 情况1：没有初始化的局部变量声明 
+
++ 情况2：方法的返回类型 
+
++ 情况3：方法的参数类型 
+
++ 情况4：构造器的参数类型 
+
++ 情况5：属性 
+
++ 情况6：catch块
+
+**工作原理**
+
+在处理 var时，编译器先是查看表达式右边部分，并根据右边变量值的类型进行推断，作为左边变量的类型，然后将该类型写入字节码当中。
+
+**注 意**：
+
+1. var不是一个关键字
+
+   你不需要担心变量名或方法名会与 var发生冲突，因为 var实际上并不是一个关键字，而是一个类型名，只有在编译器需要知道类型的地方才需要用到它。除此之外，它就是一个普通合法的标识符。也就是说，除了不能用它作为类名，其他的都可以，但极少人会用它作为类名。
+
+2. 这不是JavaScript
+
+   首先我要说明的是，var并不会改变Java是一门静态类型语言的事实。编译器负责推断出类型，并把结果写入字节码文件，就好像是开发人员自己敲入类型一样。下面是使用 IntelliJ（实际上是 Fernflower的反编译器）反编译器反编译出的代码：
+
+```java
+var url = new URL("http://www.atguigu.com");
+var connection = url.openConnection();
+var reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+反编译后
+URL url = new URL("http://www.atguigu.com");
+URLConnection connection = url.openConnection();
+BufferedReader reader = new BufferedReader(
+new InputStreamReader(connection.getInputStream()));
+
+```
+
+从代码来看，就好像之前已经声明了这些类型一样。事实上，这一特性只发生在编译阶段，与运行时无关，所以对运行时的性能不会产生任何影响。所以请放心，这不是 JavaScript。
+
+**二、集合新增创建不可变集合的方法**
+
+自 Java 9 开始，Jdk 里面为集合（List / Set / Map）都添加了 of (jdk9新增)和 copyOf (jdk10新增)方法，它们两个都用来创建不可变的集合，来看下它们的使用和区别。
+
+```java
+//示例1：
+var list1 = List.of("Java", "Python", "C");
+var copy1 = List.copyOf(list1);
+System.out.println(list1 == copy1); // true
+//示例2：
+var list2 = new ArrayList<String>();
+var copy2 = List.copyOf(list2);
+System.out.println(list2 == copy2); // false
+//示例1和2代码基本一致，为什么一个为true,一个为false?
+```
+
+​		从 源 码 分 析 ， 可 以 看 出 copyOf 方 法 会 先 判 断 来 源 集 合 是 不 是 AbstractImmutableList 类型的，如果是，就直接返回，如果不是，则调用 of 创 建一个新的集合。 示例2因为用的 new 创建的集合，不属于不可变 AbstractImmutableList 类的子类， 所以 copyOf 方法又创建了一个新的实例，所以为false。 
+
+**注意**：使用of和copyOf创建的集合为不可变集合，不能进行添加、删除、替换、 排序等操作，不然会报 java.lang.UnsupportedOperationException 异常。 上面演示了 List 的 of 和 copyOf 方法，Set 和 Map 接口都有。 
+
+### 14.3.Java11
+
+北京时间 2018年9 月 26 日，Oracle 官方宣布 Java 11 正式发布。这是 Java 大版本周期变化后的第一个长期支持版本，非常值得关注。从官网即可下载,最新发布的 Java11 将带来 ZGC、Http Client 等重要特性，一共包含 17 个 JEP（JDK Enhancement Proposals，JDK 增强提案）。其实，总共更新不止17个，只是我们更关注如下的17个JEP更新。
+
+![1683559271506](D:\MyNote\images\1683559271506.png)
+
+**JDK 11** **将是一个 企业不可忽视的版本。**从时间节点来看，JDK 11 的发布正好处在 JDK 8 免费更新到期的前夕，同时 JDK 9、10 也陆续成为**“历史版本”** ，下面是 Oracle JDK 支持路线图：
 
 
 
