@@ -541,3 +541,31 @@ Query OK, 0 rows affected (0.00 sec)
 停止服务的命令:exit
 
 之后再次登陆mysql直接输入修改后的密码就能进入了
+
+## 9.2.root用户密码忘记
+
+1: 通过任务管理器或者服务管理，关掉mysqld(服务进程) 
+
+2: 通过命令行+特殊参数开启mysqld mysqld -- 
+
+defaults-file="D:\ProgramFiles\mysql\MySQLServer5.7Data\my.ini" --skip-grant-tables 
+
+3: 此时，mysqld服务进程已经打开。并且不需要权限检查 
+
+4: mysql -uroot 无密码登陆服务器。另启动一 个客户端进行 
+
+5: 修改权限表 
+
+（1） use mysql; 
+
+（2）update user set authentication_string=password('新密码') where user='root' and Host='localhost'; 
+
+（3）flush privileges; 
+
+6: 通过任务管理器，关掉mysqld服务进程。 
+
+7: 再次通过服务管理，打开mysql服务。 8: 即可用修改后的新密码登陆。 
+
+## 9.3.mysql命令报“不是内部或外部命令”
+
+如果输入mysql命令报“不是内部或外部命令”，把mysql安装目录的bin目录配置到环境变量path中。
